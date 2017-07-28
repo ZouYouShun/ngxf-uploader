@@ -201,3 +201,14 @@ export enum UploadStatus {
 This library is follow [angular-quickstart-lib](https://github.com/filipesilva/angular-quickstart-lib)
 
 You can follow to test.
+
+1. install package
+  `npm install`
+2. build library
+`npm run build`
+3. run preintegration
+`npm run preintegration`
+4. cd integration
+`cd integration`
+5. npm start
+`npm start`
