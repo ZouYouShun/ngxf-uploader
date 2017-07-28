@@ -1,0 +1,10 @@
+{
+  "server": {
+    "baseDir": "src/demo",
+    "routes": {
+      "/node_modules": "node_modules",
+      "/ngxf-uploader": "src/lib"
+    }
+  },
+  "port": 8000
+}

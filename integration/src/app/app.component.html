@@ -1,0 +1,11 @@
+<div class="block" (ngxf-drop)="uploadFileList($event)" drop-class="drop" multiple accept="image/*,.svg" >
+  <label class="upload-button">
+    <input type="file" (ngxf-select)="uploadFile($event)" accept="image/*,.svg,.ttt" >
+    choice file.
+  </label>
+
+   <label class="upload-button">
+    <input type="file" (ngxf-select)="uploadFileList($event)" multiple accept="image/*,.mp3">
+    choic files
+  </label>
+</div>
