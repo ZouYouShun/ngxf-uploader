@@ -1,7 +1,9 @@
-# ngxf-uploader
+# ngxf-uploader  
+
 
 File uploader for Angular 4.3+, just use Angular HttpClient, no other dependence.
 
+[https://github.com/ZouYouShun/ngxf-uploader](https://github.com/ZouYouShun/ngxf-uploader)
 ## Description
 
 Select file or Drop file, and return an Observable. You can custom your behavior use [RxJs](https://github.com/Reactive-Extensions/RxJS) .
