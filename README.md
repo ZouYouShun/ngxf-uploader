@@ -12,12 +12,19 @@ Select file or Drop file, and return an Observable. You can custom your behavior
 
 `npm install ngxf-uploader --save`
 
-1. Import `HttpClientModule` into your main AppModule, and `NgxfUploaderModule` into your main AppModule or in module where you want use.
+1. Import `HttpClientModule` and RxJs into your main AppModule, and `NgxfUploaderModule` into your main AppModule or in module where you want use. 
 ```ts
 // app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/filter';
+
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
 
 import { AppComponent } from './app.component';
 
