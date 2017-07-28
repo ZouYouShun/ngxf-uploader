@@ -8,14 +8,18 @@ Select file or Drop file, and return an Observable. You can custom your behavior
 
 ## Install
 
-`npm install ngfx-uploader --save`
+`npm install ngxf-uploader --save`
 
 1. Import `HttpClientModule` into your main AppModule, and `NgxfUploaderModule` into your main AppModule or in module where you want use.
 ```ts
 // app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgUploaderModule } from 'ngx-uploader';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppComponent } from './app.component';
+
+import { NgxfUploaderModule } from 'ngxf-uploader';
 
 @NgModule({
   declarations: [
@@ -24,12 +28,13 @@ import { NgUploaderModule } from 'ngx-uploader';
   imports: [
     BrowserModule,
     HttpClientModule,
-    NgxfUploaderModule,
+    NgxfUploaderModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
 ```
 2. Add directive in the template where you want to use.
 ```html
@@ -188,5 +193,3 @@ export enum UploadStatus {
   FileNumError // When no choice file.
 }
 ```
-
-hava a good time

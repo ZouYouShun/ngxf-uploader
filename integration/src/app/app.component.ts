@@ -1,7 +1,6 @@
 import { Component, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { NgxfUploaderService, UploadEvent, UploadStatus } from 'ngxf-uploader';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +12,7 @@ export class AppComponent {
   process: number[] = [];
   fileData: File;
 
-  constructor(private http: HttpClient, private Upload: NgxfUploaderService) { }
+  constructor(private Upload: NgxfUploaderService) { }
 
   // non-multiple, return File
   uploadFile(file: File): void {
