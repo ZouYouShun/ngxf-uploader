@@ -195,3 +195,9 @@ export enum UploadStatus {
   FileNumError // When no choice file.
 }
 ```
+
+### Develope
+
+This library is follow [angular-quickstart-lib](https://github.com/filipesilva/angular-quickstart-lib)
+
+You can follow to test.
