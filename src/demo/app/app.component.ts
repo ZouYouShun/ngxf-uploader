@@ -1,6 +1,6 @@
 import { Component, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { NgxfUploaderService, UploadEvent, UploadStatus } from 'ngxf-uploader';
+import { NgxfUploaderService, UploadEvent, UploadStatus, FileError } from 'ngxf-uploader';
 
 @Component({
   selector: 'app-root',
@@ -15,15 +15,17 @@ export class AppComponent {
   constructor(private Upload: NgxfUploaderService) { }
 
   // non-multiple, return File
-  uploadFile(file: File): void {
-
+  uploadFile(file: File | FileError): void {
+    if (!(file instanceof File)) {
+      this.alertError(file);
+      return;
+    }
     this.Upload.upload({
       url: 'http://localhost:3000/file/upload',
       fields: {
         toUrl: 'device'
       },
-      files: file,
-      process: true
+      files: file
     }).subscribe(
       (event: UploadEvent) => {
         if (event.status === UploadStatus.Uploading) {
@@ -41,7 +43,11 @@ export class AppComponent {
   }
 
   // multiple, return FileList
-  uploadFileList(files: FileList): void {
+  uploadFileList(files: FileList | FileError): void {
+    if (!(files instanceof FileList)) {
+      this.alertError(files);
+      return;
+    }
 
     this.Upload.upload({
       url: 'http://localhost:3000/file/upload',
@@ -63,10 +69,18 @@ export class AppComponent {
         console.log('complete');
       });
   }
-}
 
-    // const a$ = Observable.create(function (Observer) {
-    //   Observer.next('device');
-    // }).concatMap(data => {
-    //   return Observable.combineLatest([this.u2(files, data), this.u2(files, data)]);
-    // });
+  alertError(msg: FileError) {
+    switch (msg) {
+      case FileError.NumError:
+        alert('Number Error');
+        break;
+      case FileError.SizeError:
+        alert('Size Error');
+        break;
+      case FileError.TypeError:
+        alert('Type Error');
+        break;
+    }
+  }
+}

@@ -47,9 +47,17 @@ export class AppModule { }
 ```
 2. Add directive in the template where you want to use.
 ```html
-<div class="block" (ngxf-drop)="uploadFileList($event)" drop-class="drop" multiple  accept="image/*,.svg" >
+<div class="block"
+     (ngxf-drop)="uploadFileList($event)"
+     drop-class="drop"
+     accept="image/*,.svg"
+     multiple
+     [ngxf-validate]="{ size: { min: 50000, max:1000000 } }">
   <label class="upload-button">
-    <input type="file" (ngxf-select)="uploadFile($event)" accept="image/*,.svg,.ttt" >
+    <input type="file"
+          (ngxf-select)="uploadFile($event)"
+          [ngxf-validate]="{ size: { min: 50000, max:1000000 } }"
+          accept="image/*,.svg,.ttt" >
     choice file.
   </label>
 
@@ -58,7 +66,6 @@ export class AppModule { }
     choic files
   </label>
 </div>
-
 ```
 
 3. Add `NgxfUploaderService` in the constructor and create file upload method in the typescript and upload file to server.
@@ -66,7 +73,7 @@ export class AppModule { }
 ```ts
 import { Component, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { NgxfUploaderService, UploadEvent, UploadStatus } from 'ngxf-uploader';
+import { NgxfUploaderService, UploadEvent, UploadStatus, FileError } from 'ngxf-uploader';
 
 @Component({
   selector: 'app-root',
@@ -81,8 +88,11 @@ export class AppComponent {
   constructor(private Upload: NgxfUploaderService) { }
 
   // non-multiple, return File
-  uploadFile(file: File): void {
-
+  uploadFile(file: File | FileError): void {
+    if (!(file instanceof File)) {
+      this.alertError(file);
+      return;
+    }
     this.Upload.upload({
       url: 'your upload url',
       fields: {
@@ -103,6 +113,10 @@ export class AppComponent {
 
   // multiple, return FileList
   uploadFileList(files: FileList): void {
+    if (!(files instanceof FileList)) {
+      this.alertError(files);
+      return;
+    }
 
     this.Upload.upload({
       url: 'your upload url',
@@ -127,6 +141,21 @@ export class AppComponent {
         console.log('complete');
       });
   }
+
+  //Do something you want when file error occur.
+  alertError(msg: FileError) {
+    switch (msg) {
+      case FileError.NumError:
+        alert('Number Error');
+        break;
+      case FileError.SizeError:
+        alert('Size Error');
+        break;
+      case FileError.TypeError:
+        alert('Type Error');
+        break;
+    }
+  }
 }
 
 ```
@@ -135,12 +164,17 @@ export class AppComponent {
 ### Select
 Add this directive on the input[type='file'].
 ```html
-    <input type="file" (ngxf-select)="uploadFile($event)" accept="image/*,.svg,.ttt" multiple>
+    <input type="file"
+          (ngxf-select)="uploadFile($event)"
+          [ngxf-validate]="{ size: { min: 50000, max:1000000 } }"
+          accept="image/*,.svg"
+          multiple >
 ```
 #### attribute
 ```ts
 (ngxf-select)="uploadFile($event)"  // Method, add this on where you want to select file.
-accept="image/*,.svg,.ttt" // String, can accept file like file accept 
+[ngxf-validate]="{ size: { min: 50000, max:1000000 } }" // FileOption, set allow size  
+accept="image/*,.svg" // String, can accept file like file accept 
 multiple // none, if you want to choice multiple file, add this attribute
 ```
 
@@ -150,16 +184,21 @@ multiple // none, if you want to choice multiple file, add this attribute
 ### Drop
 Add this directive where you want drop in.
 ```html
-    <div class="block" (ngxf-drop)="uploadFileList($event)" drop-class="drop" multiple accept="image/*,.svg" >Drop Area</div>
+    <div class="block"
+     (ngxf-drop)="uploadFileList($event)"
+     drop-class="drop"
+     accept="image/*,.svg"
+     multiple
+     [ngxf-validate]="{ size: { min: 50000, max:1000000 } }">Drop Area</div>
 ```
 #### attribute
 ```ts
 (ngxf-drop)="uploadFileList($event)"  // Method, add this on where you want to drop file in.
+[ngxf-validate]="{ size: { min: 50000, max:1000000 } }" // FileOption, set allow size  
 drop-class="drop" //String, class name when your file drop over, this class will append on element.
-accept="image/*,.svg,.ttt" // String, can accept file like file accept 
+accept="image/*,.svg" // String, can accept file like file accept 
 multiple // none, if you want to choice multiple file, add this attribute
 ```
-
 
 ## API
 
@@ -192,8 +231,25 @@ export interface UploadEvent {
 }
 ```
 
+### FileOption
+```ts
+export interface FileOption {
+  size: { min?: number, max?: number }; // unit: Byte
+}
+```
+
+### FileError
+You can use this enum to conclude the file select return.
+```ts
+export enum FileError {
+  NumError,
+  TypeError,
+  SizeError
+}
+```
+
 ### UploadStatus
-You can use this enum to conclude the Event
+You can use this enum to conclude the return Event.
 ```ts
 export enum UploadStatus {
   Uploading,
@@ -206,16 +262,3 @@ export enum UploadStatus {
 ### Develope
 
 This library is follow [angular-quickstart-lib](https://github.com/filipesilva/angular-quickstart-lib)
-
-You can follow to test.
-
-1. install package
-  `npm install`
-2. build library
-`npm run build`
-3. run preintegration
-`npm run preintegration`
-4. cd integration
-`cd integration`
-5. npm start
-`npm start`

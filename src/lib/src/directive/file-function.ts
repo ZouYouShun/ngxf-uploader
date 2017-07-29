@@ -19,19 +19,18 @@ function checkAllFile(file: File | FileList, accept: string, option: FileOption)
   if (file instanceof FileList) {
     let result: any = null;
 
-    let Rbool = Array.from(file).every((f) => {
+    if (!Array.from(file).every((f) => {
       if (!cfType(f, accept)) {
         result = FileError.TypeError;
       }
-      if (!cfSize(f, option)) {
+      if (result === null && !cfSize(f, option)) {
         result = FileError.SizeError;
       }
       return (result === null);
-    });
-
-    if (Rbool) {
+    })) {
       return result;
     }
+
   } else {
     if (!cfType(file, accept)) {
       return FileError.TypeError;
@@ -65,10 +64,8 @@ function cfSize(file: File, option: FileOption): boolean {
   if (option) {
     const size = file.size;
     const chkSize = option.size;
-    if (option.size.max) {
-      if ((chkSize.min && size < chkSize.min) || (chkSize.max && size > chkSize.max)) {
-        return false;
-      }
+    if ((chkSize.min && size < chkSize.min) || (chkSize.max && size > chkSize.max)) {
+      return false;
     }
   }
   return true;
