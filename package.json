@@ -1,6 +1,6 @@
 {
   "name": "ngxf-uploader",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Angular(4.3+) uploader",
   "main": "./bundles/ngxf-uploader.umd.js",
   "module": "./ngxf-uploader.es5.js",
@@ -16,6 +16,16 @@
   "bugs": {
     "url": "https://github.com/ZouYouShun/ngxf-uploader/issues"
   },
+  "keywords": [
+    "angular",
+    "angular2",
+    "angular4",
+    "ng",
+    "ngx",
+    "file",
+    "uploader",
+    "typescript"
+  ],
   "engines": {
     "node": ">= 6.9.0",
     "npm": ">= 3.0.0"
