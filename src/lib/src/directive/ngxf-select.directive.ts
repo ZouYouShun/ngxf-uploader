@@ -1,6 +1,7 @@
 import { Directive, OnInit, EventEmitter, Output, Input, HostListener, ElementRef, HostBinding } from '@angular/core';
 
 import { emitOpload } from './file-function';
+import { FileOption, FileError } from './ngxf-uploader.service';
 
 
 @Directive({
@@ -9,7 +10,8 @@ import { emitOpload } from './file-function';
 export class NgxfSelectDirective implements OnInit {
   @HostBinding('style.display') display = 'none';
 
-  @Output('ngxf-select') uploadOutput = new EventEmitter<File | FileList>();
+  @Output('ngxf-select') uploadOutput = new EventEmitter<File | FileList | FileError>();
+  @Input('ngxf-validate') fileOption: FileOption;
   @Input() multiple: string;
   @Input() accept: string;
 
@@ -27,7 +29,7 @@ export class NgxfSelectDirective implements OnInit {
     if (this.el.files.length > 0) {
       // if allow mutiple
       this.uploadOutput.emit(
-        emitOpload(this.el.files, this.accept, this.multiple)
+        emitOpload(this.el.files, this.accept, this.multiple, this.fileOption)
       );
       this.el.value = '';
     }

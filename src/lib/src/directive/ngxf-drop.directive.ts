@@ -1,13 +1,15 @@
 import { Directive, OnInit, EventEmitter, Output, Input, HostListener, ElementRef } from '@angular/core';
 
 import { emitOpload } from './file-function';
+import { FileOption, FileError } from './ngxf-uploader.service';
 
 @Directive({
   selector: '[ngxf-drop]'
 })
 export class NgxfDropDirective implements OnInit {
 
-  @Output('ngxf-drop') uploadOutput = new EventEmitter<File | FileList>();
+  @Output('ngxf-drop') uploadOutput = new EventEmitter<File | FileList | FileError>();
+  @Input('ngxf-validate') fileOption: FileOption;
   @Input('drop-class') dropClass = 'drop';
   @Input() multiple: string;
   @Input() accept: string;
@@ -26,7 +28,7 @@ export class NgxfDropDirective implements OnInit {
 
     // if allow mutiple
     this.uploadOutput.emit(
-      emitOpload(e.dataTransfer.files, this.accept, this.multiple)
+      emitOpload(e.dataTransfer.files, this.accept, this.multiple, this.fileOption)
     );
   }
 

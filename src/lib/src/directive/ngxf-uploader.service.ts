@@ -83,6 +83,11 @@ export class NgxfUploaderService {
     }
   }
 }
+export enum FileError {
+  NumError = 'Number Error',
+  TypeError = 'Type Error',
+  SizeError = 'Size Error'
+}
 
 export enum UploadStatus {
   Uploading,
@@ -104,4 +109,8 @@ export interface UploadEvent {
   status: UploadStatus;
   percent: number;
   data?: any;
+}
+
+export interface FileOption {
+  size: { min?: number, max?: number };
 }
