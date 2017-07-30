@@ -5,7 +5,12 @@ import {
   MdButtonModule,
   MdCardModule,
   MdProgressBarModule,
-  MdGridListModule
+  MdGridListModule,
+  MdToolbarModule,
+  MdIconModule,
+  MdSidenavModule,
+  MdSliderModule,
+  MdRadioModule
 } from '@angular/material';
 
 @NgModule({
@@ -13,13 +18,23 @@ import {
     MdButtonModule,
     MdCardModule,
     MdProgressBarModule,
-    MdGridListModule
+    MdGridListModule,
+    MdToolbarModule,
+    MdIconModule,
+    MdSidenavModule,
+    MdSliderModule,
+    MdRadioModule
   ],
   exports: [
     MdButtonModule,
     MdCardModule,
     MdProgressBarModule,
-    MdGridListModule
+    MdGridListModule,
+    MdToolbarModule,
+    MdIconModule,
+    MdSidenavModule,
+    MdSliderModule,
+    MdRadioModule
   ],
 })
 export class MyMaterialModuleModule { }
