@@ -1,6 +1,6 @@
 import { Component, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { NgxfUploaderService, UploadEvent, UploadStatus } from 'ngxf-uploader';
+import { NgxfUploaderService, UploadEvent, UploadStatus, FileError } from 'ngxf-uploader';
 
 @Component({
   selector: 'app-root',
@@ -15,24 +15,22 @@ export class AppComponent {
   constructor(private Upload: NgxfUploaderService) { }
 
   // non-multiple, return File
-  uploadFile(file: File): void {
-
+  uploadFile(file: File | FileError): void {
+    if (!(file instanceof File)) {
+      this.alertError(file);
+      return;
+    }
     this.Upload.upload({
-      url: 'http://localhost:3000/file/upload',
+      url: 'your upload url',
       fields: {
         toUrl: 'device'
       },
-      files: file,
-      process: true
+      files: file
     }).subscribe(
       (event: UploadEvent) => {
-        if (event.status === UploadStatus.Uploading) {
-          console.log(event.percent);
-        } else {
-          console.log(event);
-        }
+        console.log(event);
       },
-      (err: any) => {
+      (err) => {
         console.log(err);
       },
       () => {
@@ -42,31 +40,47 @@ export class AppComponent {
 
   // multiple, return FileList
   uploadFileList(files: FileList): void {
+    if (!(files instanceof FileList)) {
+      this.alertError(files);
+      return;
+    }
 
     this.Upload.upload({
-      url: 'http://localhost:3000/file/upload',
+      url: 'your upload url',
       fields: {
         toUrl: 'device'
       },
       files: files,
-      // filesKey: ['MMSUploadFile', 'aaa', 'bbb'],
-      filesKey: ['MMSUploadFile'],
+      filesKey: ['key1', 'key2', 'key3'],
       process: true
     }).subscribe(
       (event: UploadEvent) => {
-        console.log(event);
+        if (event.status === UploadStatus.Uploading) {
+          console.log(event.percent);
+        } else {
+          console.log(event);
+        }
       },
-      (err: any) => {
+      (err) => {
         console.log(err);
       },
       () => {
         console.log('complete');
       });
   }
-}
 
-    // const a$ = Observable.create(function (Observer) {
-    //   Observer.next('device');
-    // }).concatMap(data => {
-    //   return Observable.combineLatest([this.u2(files, data), this.u2(files, data)]);
-    // });
+  // Do something you want when file error occur.
+  alertError(msg: FileError) {
+    switch (msg) {
+      case FileError.NumError:
+        alert('Number Error');
+        break;
+      case FileError.SizeError:
+        alert('Size Error');
+        break;
+      case FileError.TypeError:
+        alert('Type Error');
+        break;
+    }
+  }
+}

@@ -1,26 +1,28 @@
-# Integration App
+# FileUploadTest
 
-This is a simplified version of https://github.com/angular/quickstart used to test the built lib.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.1.
 
-## npm scripts
+## Development server
 
-We've captured many of the most useful commands in npm scripts defined in the `package.json`:
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-* `npm start` - runs the compiler and a server at the same time, both in "watch mode".
-* `npm run e2e` - compiles the app and run e2e tests.
-* `npm run e2e:aot` - compiles and the app with AOT and run e2e tests.
+## Code scaffolding
 
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
 
-If you need to manually test a library build, follow these steps:
-```
-# starting at the project root, build the library
-npm run build
-# clean the integration app
-npm run preintegration
-cd integration
-npm install
-```
+## Build
 
-Now the library is installed in your integration app. 
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-You can use `npm start` to start a live reload server running the app in JIT mode, or `npm run build && npm run serve:aot` to run a static server in AOT mode.
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Before running the tests make sure you are serving the app via `ng serve`.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

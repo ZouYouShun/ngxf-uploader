@@ -1,6 +1,14 @@
-<div class="block" (ngxf-drop)="uploadFileList($event)" drop-class="drop" multiple accept="image/*,.svg" >
+<div class="block"
+     (ngxf-drop)="uploadFileList($event)"
+     drop-class="drop"
+     accept="image/*,.svg"
+
+     [ngxf-validate]="{ size: { min: 50000, max:1000000 } }">
   <label class="upload-button">
-    <input type="file" (ngxf-select)="uploadFile($event)" accept="image/*,.svg,.ttt" >
+    <input type="file"
+          (ngxf-select)="uploadFile($event)"
+          [ngxf-validate]="{ size: { min: 50000, max:1000000 } }"
+          accept="image/*,.svg,.ttt" >
     choice file.
   </label>
 
