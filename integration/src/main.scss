@@ -2,6 +2,7 @@ body {
   font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
   margin: 0;
 }
+
 .docs-button {
   text-transform: uppercase;
 }
@@ -14,7 +15,6 @@ body {
   background: #fafafa;
 }
 
-
 // .mat-sidenav-backdrop {
 //   position: absolute;
 //   top: 0;
@@ -25,7 +25,6 @@ body {
 //   z-index: 2;
 //   visibility: hidden;
 // }
-
 // .cdk-visually-hidden {
 //   border: 0;
 //   clip: rect(0 0 0 0);
@@ -37,7 +36,6 @@ body {
 //   text-transform: none;
 //   width: 1px;
 // }
-
 .docs-component-viewer-sidenav-container {
   width: 100%;
 }
@@ -134,4 +132,24 @@ body {
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
   flex-grow: 1
+}
+
+.docs-primary-header {
+  background: #3f51b5;
+}
+
+.docs-primary-header {
+  padding-left: 20px;
+}
+
+.docs-primary-header h1 {
+  font-size: 30px;
+  font-weight: 300;
+  margin: 0;
+  padding: 50px;
+}
+
+.docs-footer,
+.docs-primary-header h1 {
+  color: hsla(0, 0%, 100%, .87);
 }

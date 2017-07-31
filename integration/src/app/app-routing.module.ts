@@ -6,29 +6,7 @@ import { PageContainerComponent } from './component-sidenav/page-container/page-
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'page',
-    pathMatch: 'full'
-  },
-  {
-    path: 'page',
-    component: ComponentSidenavComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'upload',
-        pathMatch: 'full'
-      },
-      {
-        path: 'upload',
-        component: PageContainerComponent,
-        children: [
-          {
-            path: '',
-            loadChildren: './component-sidenav/page-container/uploader-container/uploader-container.module#UploaderContainerModule',
-          }
-        ]
-      },
-    ]
+    loadChildren: './component-sidenav/component-sidenav.module#ComponentSidenavModule'
   },
   {
     path: '**',

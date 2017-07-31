@@ -11,7 +11,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MyMaterialModuleModule } from './shared/my-material-module.module';
 import { NgxfUploaderModule } from 'ngxf-uploader';
@@ -22,6 +22,8 @@ import { ComponentSidenavModule } from './component-sidenav/component-sidenav.mo
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { GithubLinkComponent } from './navbar/github-link/github-link.component';
+import { SharedModule } from './shared/shared.module';
+import { AlertConfirmModule } from './shared/components/alert-confirm/alert-confirm.module';
 
 
 @NgModule({
@@ -34,14 +36,16 @@ import { GithubLinkComponent } from './navbar/github-link/github-link.component'
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
+    NgxfUploaderModule.forRoot(),
 
     AppRoutingModule,
-    NgxfUploaderModule.forRoot(),
-    MyMaterialModuleModule,
 
-    ComponentSidenavModule
+    MyMaterialModuleModule,
+    ComponentSidenavModule,
+    AlertConfirmModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

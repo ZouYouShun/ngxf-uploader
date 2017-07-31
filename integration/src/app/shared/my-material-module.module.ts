@@ -10,7 +10,9 @@ import {
   MdIconModule,
   MdSidenavModule,
   MdSliderModule,
-  MdRadioModule
+  MdRadioModule,
+  MdInputModule,
+  MdDialogModule
 } from '@angular/material';
 
 @NgModule({
@@ -23,7 +25,9 @@ import {
     MdIconModule,
     MdSidenavModule,
     MdSliderModule,
-    MdRadioModule
+    MdRadioModule,
+    MdInputModule,
+    MdDialogModule
   ],
   exports: [
     MdButtonModule,
@@ -34,7 +38,9 @@ import {
     MdIconModule,
     MdSidenavModule,
     MdSliderModule,
-    MdRadioModule
+    MdRadioModule,
+    MdInputModule,
+    MdDialogModule
   ],
 })
 export class MyMaterialModuleModule { }

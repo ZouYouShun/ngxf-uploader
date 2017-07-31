@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'app-page-container',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./page-container.component.scss']
 })
 export class PageContainerComponent implements OnInit {
+  @HostBinding('class') class = 'pad';
 
   constructor() { }
 

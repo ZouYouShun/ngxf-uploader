@@ -1,16 +1,28 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UploaderComponent } from './uploader/uploader.component';
+import { UploaderContainerComponent } from './uploader-container.component';
+import { SignalFUploadComponent } from './signal-f-upload/signal-f-upload.component';
+import { MultiFUploadComponent } from './multi-f-upload/multi-f-upload.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'signal',
-    pathMatch: 'full'
-  },
-  {
-    path: 'signal',
-    component: UploaderComponent
+    component: UploaderContainerComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'signal',
+        pathMatch: 'full'
+      },
+      {
+        path: 'signal',
+        component: SignalFUploadComponent
+      },
+      {
+        path: 'multi',
+        component: MultiFUploadComponent
+      }
+    ]
   },
 ];
 
