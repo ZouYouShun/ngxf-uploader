@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { PageHeaderService } from './page-header.service';
-import { BaseComponent } from '@shared/base/base.component';
+import { AutoDestory } from '@shared/base/auto.destory';
 
 @Component({
   selector: 'app-page-header',
   templateUrl: './page-header.component.html',
   styleUrls: ['./page-header.component.scss']
 })
-export class PageHeaderComponent extends BaseComponent implements OnInit {
+export class PageHeaderComponent extends AutoDestory implements OnInit {
 
   public title = 'Component';
   constructor(private _ps: PageHeaderService) {

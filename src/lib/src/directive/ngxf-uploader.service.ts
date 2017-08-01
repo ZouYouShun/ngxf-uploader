@@ -14,7 +14,7 @@ export class NgxfUploaderService {
   constructor(private http: HttpClient) { }
 
   upload(d: UploadObject): Observable<any> {
-    if (d.files) {
+    if ((d.files instanceof File) || (d.files instanceof Array && d.fields.length !== 0)) {
       const ufData = new FormData();
 
       if (d.files instanceof File) {
@@ -102,7 +102,7 @@ export enum UploadStatus {
 export interface UploadObject {
   url: string;
   fields: any;
-  files: File | FileList;
+  files: File | File[];
   filesKey?: string | string[];
   process?: boolean;
   method?: string; // Custom your method Default is POST

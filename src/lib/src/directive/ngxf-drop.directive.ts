@@ -8,7 +8,7 @@ import { FileOption, FileError } from './ngxf-uploader.service';
 })
 export class NgxfDropDirective implements OnInit {
 
-  @Output('ngxf-drop') uploadOutput = new EventEmitter<File | FileList | FileError>();
+  @Output('ngxf-drop') uploadOutput = new EventEmitter<File | File[] | FileError>();
   @Input('ngxf-validate') fileOption: FileOption;
   @Input('drop-class') dropClass = 'drop';
   @Input() multiple: string;

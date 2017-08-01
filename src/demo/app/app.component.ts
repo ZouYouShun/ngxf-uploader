@@ -43,8 +43,8 @@ export class AppComponent {
   }
 
   // multiple, return FileList
-  uploadFileList(files: FileList | FileError): void {
-    if (!(files instanceof FileList)) {
+  uploadFileList(files: File[] | FileError): void {
+    if (!(files instanceof Array)) {
       this.alertError(files);
       return;
     }

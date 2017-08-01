@@ -1,20 +1,23 @@
-<form [formGroup]="myForm" (ngSubmit)="startUpload()" class="example-form">
-  <md-card class="example-card">
-    <md-card-header *ngIf="file">
-      <!-- <div md-card-avatar class="example-header-image"></div> -->
+<button md-raised-button color="warn" (click)="multiple.click()">choice file</button>
+<button md-raised-button color="accent" (click)="startUpload()">Upload</button>
+
+<md-card>
+  <md-card-content>
+    <h1>Total progress</h1>
+    <md-progress-bar color="primary" mode="determinate" [value]="present"> </md-progress-bar>
+  </md-card-content>
+</md-card>
+
+<div>
+  <md-card class="example-card card" *ngFor="let file of files; let i = index">
+    <md-card-header>
       <md-card-title>{{file?.name}}</md-card-title>
       <md-card-subtitle>{{file?.size}} Byte</md-card-subtitle>
     </md-card-header>
-    <img *ngIf="filePreviewPath" md-card-image [src]="filePreviewPath">
-    <md-card-content>
-      <md-progress-bar color="primary" mode="determinate" [value]="present"> </md-progress-bar>
-    </md-card-content>
-    <md-card-actions>
-      <a class="nonal-button" md-raised-button (click)="signal.click()">
-      choice file
-    </a>
-      <button md-raised-button color="accent">Upload</button>
-    </md-card-actions>
+
+    <img md-card-image [src]="previewUrl[i]">
   </md-card>
-</form>
-<input #signal type="file" (ngxf-select)="uploadFile($event)" accept="image/*,.svg" required>
+</div>
+
+
+<input #multiple type="file" (ngxf-select)="uploadFileList($event)" accept="image/*" required multiple>

@@ -8,12 +8,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UploaderContainerComponent implements OnInit {
 
-  constructor(
-    private _activatedRoute: ActivatedRoute) { }
+  constructor() { }
 
   ngOnInit() {
-
-    console.log(this._activatedRoute.snapshot.data['menuList']);
   }
 
 

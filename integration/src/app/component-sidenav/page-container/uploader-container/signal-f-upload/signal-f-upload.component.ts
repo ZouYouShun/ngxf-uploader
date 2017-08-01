@@ -4,13 +4,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { AlertConfirmService, AlertConfirmModel } from '@shared/components/alert-confirm';
 import { PageHeaderService } from '../../page-header/page-header.service';
+import { AutoDestory } from '@shared/base/auto.destory';
 
 @Component({
   selector: 'app-signal-f-upload',
   templateUrl: './signal-f-upload.component.html',
   styleUrls: ['./signal-f-upload.component.scss']
 })
-export class SignalFUploadComponent implements OnInit {
+export class SignalFUploadComponent extends AutoDestory implements OnInit {
 
   public myForm: FormGroup;
   public file: File;
@@ -22,20 +23,19 @@ export class SignalFUploadComponent implements OnInit {
     private Upload: NgxfUploaderService,
     private _alertConfirm: AlertConfirmService,
     private _sanitizer: DomSanitizer,
-    private _ps: PageHeaderService) { }
+    private _ps: PageHeaderService) { super(); }
 
   ngOnInit() {
     this._ps.setTitle('Signal File Uploader');
     this.myForm = new FormGroup({
-      file: new FormControl(this.file, Validators.required),
-      lastName: new FormControl(null, Validators.required),
+      file: new FormControl(this.file, Validators.required)
     });
   }
 
   // non-multiple, return File
   uploadFile(file: File | FileError): void {
     if (file instanceof File) {
-      console.log(file);
+      this.present = 0;
       this.file = file;
       this.filePreviewPath = this._sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(this.file));
       return;
@@ -45,7 +45,6 @@ export class SignalFUploadComponent implements OnInit {
   }
 
   startUpload() {
-    this.present = 0;
     this.Upload.upload({
       url: 'http://localhost:3000/file/upload',
       fields: {
@@ -54,7 +53,9 @@ export class SignalFUploadComponent implements OnInit {
       files: this.file,
       filesKey: 'MMSUploadFile',
       process: true
-    }).subscribe(
+    })
+      .takeUntil(this._destroy$)
+      .subscribe(
       (event: UploadEvent) => {
         if (event.status === UploadStatus.Uploading) {
           this.present = event.percent;
@@ -72,13 +73,13 @@ export class SignalFUploadComponent implements OnInit {
   alertError(msg: FileError) {
     switch (msg) {
       case FileError.NumError:
-        alert('Number Error');
+        this._alertConfirm.alert('Number Error');
         break;
       case FileError.SizeError:
-        alert('Size Error');
+        this._alertConfirm.alert('Size Error');
         break;
       case FileError.TypeError:
-        alert('Type Error');
+        this._alertConfirm.alert('Type Error');
         break;
     }
   }

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "clean": "rimraf node_modules/ngxf-uploader",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

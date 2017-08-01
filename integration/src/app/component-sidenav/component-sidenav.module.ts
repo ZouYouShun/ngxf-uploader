@@ -7,6 +7,7 @@ import { PageContainerModule } from './page-container/page-container.module';
 
 import { MenuListComponent } from './menu-list/menu-list.component';
 import { MyMaterialModuleModule } from '@shared/my-material-module.module';
+import { GuideContainerComponent } from './guide-container/guide-container.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,9 @@ import { MyMaterialModuleModule } from '@shared/my-material-module.module';
   declarations: [
     ComponentSidenavComponent,
 
-    MenuListComponent
+    MenuListComponent,
+
+    GuideContainerComponent
   ]
 })
 export class ComponentSidenavModule { }

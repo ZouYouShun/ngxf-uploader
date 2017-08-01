@@ -10,7 +10,7 @@ import { FileOption, FileError } from './ngxf-uploader.service';
 export class NgxfSelectDirective implements OnInit {
   @HostBinding('style.display') display = 'none';
 
-  @Output('ngxf-select') uploadOutput = new EventEmitter<File | FileList | FileError>();
+  @Output('ngxf-select') uploadOutput = new EventEmitter<File | File[] | FileError>();
   @Input('ngxf-validate') fileOption: FileOption;
   @Input() multiple: string;
   @Input() accept: string;

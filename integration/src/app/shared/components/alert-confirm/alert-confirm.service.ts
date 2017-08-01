@@ -3,13 +3,14 @@ import { MdDialog, MdDialogConfig } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import { AlertConfirmComponent } from './alert-confirm.component';
 import { ConfirmCallback, AlertCallback, AlertConfirmModel } from './alert-confirm.model';
+import { AutoDestory } from '@shared/base/auto.destory';
 
 @Injectable()
-export class AlertConfirmService {
+export class AlertConfirmService extends AutoDestory {
 
   private alertCallback: AlertCallback;
   private confirmCallback: ConfirmCallback;
-  constructor(private dialog: MdDialog) { }
+  constructor(private dialog: MdDialog) { super(); }
 
   confirm(obj: AlertConfirmModel | string): ConfirmCallback {
     this.openDialog(obj, DIALOG_TYPE.CONFIRM);
@@ -40,6 +41,7 @@ export class AlertConfirmService {
         });
 
     dialogRef.afterClosed()
+      .takeUntil(this._destroy$)
       .subscribe((result: boolean) => {
         if (type === DIALOG_TYPE.CONFIRM) {
           if (!result) {

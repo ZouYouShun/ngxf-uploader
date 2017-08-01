@@ -3,7 +3,7 @@ export function emitOpload
   (files: FileList,
   accept: string,
   multiple: string,
-  option: FileOption): File | FileList | FileError {
+  option: FileOption): File | File[] | FileError {
 
   if (multiple !== undefined) {
     return checkAllFile(files, accept, option);
@@ -15,9 +15,10 @@ export function emitOpload
   }
 }
 
-function checkAllFile(file: File | FileList, accept: string, option: FileOption): File | FileList | FileError {
+function checkAllFile(file: File | FileList, accept: string, option: FileOption): File | File[] | FileError {
   if (file instanceof FileList) {
     let result: any = null;
+    let files: File[] = [];
 
     if (!Array.from(file).every((f) => {
       if (!cfType(f, accept)) {
@@ -26,10 +27,13 @@ function checkAllFile(file: File | FileList, accept: string, option: FileOption)
       if (result === null && !cfSize(f, option)) {
         result = FileError.SizeError;
       }
+      files.push(f);
       return (result === null);
     })) {
       return result;
     }
+
+    return files;
 
   } else {
     if (!cfType(file, accept)) {
@@ -38,8 +42,8 @@ function checkAllFile(file: File | FileList, accept: string, option: FileOption)
     if (!cfSize(file, option)) {
       return FileError.SizeError;
     }
+    return file;
   }
-  return file;
 }
 
 function cfType(file: File, accept: string): boolean {
