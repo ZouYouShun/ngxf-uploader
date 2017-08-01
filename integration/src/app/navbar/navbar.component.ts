@@ -1,4 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import { NavbarService } from './navbar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,9 +9,11 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 export class NavbarComponent implements OnInit {
   @HostBinding('class') class = 'mat-elevation-z6';
 
-  constructor() { }
+  constructor(private _ns: NavbarService) { }
 
   ngOnInit() {
   }
-
+  toggleMenu() {
+    this._ns.toggle();
+  }
 }

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgxfUploaderService, UploadEvent, UploadStatus, FileError } from 'ngxf-uploader';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { AlertConfirmService, AlertConfirmModel } from '../../../../shared/components/alert-confirm';
+import { AlertConfirmService, AlertConfirmModel } from '@shared/components/alert-confirm';
+import { PageHeaderService } from '../../page-header/page-header.service';
 
 @Component({
   selector: 'app-signal-f-upload',
@@ -20,9 +21,11 @@ export class SignalFUploadComponent implements OnInit {
   constructor(
     private Upload: NgxfUploaderService,
     private _alertConfirm: AlertConfirmService,
-    private _sanitizer: DomSanitizer) { }
+    private _sanitizer: DomSanitizer,
+    private _ps: PageHeaderService) { }
 
   ngOnInit() {
+    this._ps.setTitle('Signal File Uploader');
     this.myForm = new FormGroup({
       file: new FormControl(this.file, Validators.required),
       lastName: new FormControl(null, Validators.required),

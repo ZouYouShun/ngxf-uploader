@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-uploader-container',
@@ -7,13 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UploaderContainerComponent implements OnInit {
 
-  color = 'primary';
-  mode = 'determinate';
-  value = 50;
-  bufferValue = 75;
-  constructor() { }
+  constructor(
+    private _activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+
+    console.log(this._activatedRoute.snapshot.data['menuList']);
   }
+
 
 }

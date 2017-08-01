@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, HostBinding } from '@angular/core';
 
 @Component({
@@ -6,11 +7,12 @@ import { Component, OnInit, HostBinding } from '@angular/core';
   styleUrls: ['./page-container.component.scss']
 })
 export class PageContainerComponent implements OnInit {
-  @HostBinding('class') class = 'pad';
 
-  constructor() { }
+  constructor(
+    private _activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+
   }
 
 }

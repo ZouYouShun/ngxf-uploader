@@ -16,11 +16,17 @@ const routes: Routes = [
       },
       {
         path: 'signal',
-        component: SignalFUploadComponent
+        component: SignalFUploadComponent,
+        resolve: {
+          menuList: 'signal'
+        },
       },
       {
         path: 'multi',
-        component: MultiFUploadComponent
+        component: MultiFUploadComponent,
+        resolve: {
+          menuList: 'multi'
+        },
       }
     ]
   },
@@ -28,6 +34,19 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
+  providers: [
+    {
+      provide: 'signal',
+      useValue: () => {
+        return 'aaaaa';
+      }
+    }, {
+      provide: 'multi',
+      useValue: () => {
+        return 'bbb';
+      }
+    }
+  ],
   exports: [RouterModule]
 })
 export class UploaderContainerRoutingModule { }

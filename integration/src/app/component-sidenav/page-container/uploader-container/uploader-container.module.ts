@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { UploaderContainerRoutingModule } from './uploader-container-routing.module';
 import { UploaderContainerComponent } from './uploader-container.component';
-import { MyMaterialModuleModule } from '../../../shared/my-material-module.module';
+import { MyMaterialModuleModule } from '@shared/my-material-module.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignalFUploadComponent } from './signal-f-upload/signal-f-upload.component';
 import { MultiFUploadComponent } from './multi-f-upload/multi-f-upload.component';

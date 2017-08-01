@@ -1,3 +1,20 @@
-<p>
-  multi-f-upload works!
-</p>
+<form [formGroup]="myForm" (ngSubmit)="startUpload()" class="example-form">
+  <md-card class="example-card">
+    <md-card-header *ngIf="file">
+      <!-- <div md-card-avatar class="example-header-image"></div> -->
+      <md-card-title>{{file?.name}}</md-card-title>
+      <md-card-subtitle>{{file?.size}} Byte</md-card-subtitle>
+    </md-card-header>
+    <img *ngIf="filePreviewPath" md-card-image [src]="filePreviewPath">
+    <md-card-content>
+      <md-progress-bar color="primary" mode="determinate" [value]="present"> </md-progress-bar>
+    </md-card-content>
+    <md-card-actions>
+      <a class="nonal-button" md-raised-button (click)="signal.click()">
+      choice file
+    </a>
+      <button md-raised-button color="accent">Upload</button>
+    </md-card-actions>
+  </md-card>
+</form>
+<input #signal type="file" (ngxf-select)="uploadFile($event)" accept="image/*,.svg" required>

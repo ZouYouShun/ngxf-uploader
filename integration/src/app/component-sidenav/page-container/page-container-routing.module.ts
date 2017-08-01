@@ -15,6 +15,9 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: './uploader-container/uploader-container.module#UploaderContainerModule',
+        // resolve: {
+        //   menuList: 'menu'
+        // },
       }
     ]
   }
@@ -22,6 +25,14 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
+  // providers: [
+  //   {
+  //     provide: 'menu',
+  //     useValue: () => {
+  //       return 'aaaaa';
+  //     }
+  //   }
+  // ],
   exports: [RouterModule]
 })
 export class PageContainerRoutingModule { }
