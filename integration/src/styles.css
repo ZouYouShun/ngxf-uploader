@@ -5,3 +5,9 @@
 .pad {
   padding: 20px 70px 50px;
 }
+
+.mat-card.card {
+  display: inline-block;
+  margin-right: 1%;
+  margin-top: 1%;
+}

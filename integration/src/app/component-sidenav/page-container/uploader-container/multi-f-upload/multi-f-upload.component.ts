@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxfUploaderService, UploadEvent, UploadStatus, FileError } from 'ngxf-uploader';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { AlertConfirmService, AlertConfirmModel } from '@shared/components/alert-confirm';
+import { FormGroup } from '@angular/forms';
+import { SafeUrl } from '@angular/platform-browser';
+import { AlertConfirmService } from '@shared/components/alert-confirm';
 import { PageHeaderService } from '../../page-header/page-header.service';
 import { AutoDestory } from '@shared/base/auto.destory';
+import { UploaderService } from '@shared/services/uploader.service';
+import { FileError, UploadEvent, UploadStatus } from 'ngxf-uploader';
 
 @Component({
   selector: 'app-multi-f-upload',
@@ -13,16 +14,14 @@ import { AutoDestory } from '@shared/base/auto.destory';
 })
 export class MultiFUploadComponent extends AutoDestory implements OnInit {
 
-  public myForm: FormGroup;
-  public files: File[] = [];
+  public files: File[];
   public previewUrl: SafeUrl[];
 
   public present = 0;
 
   constructor(
-    private Upload: NgxfUploaderService,
+    private Upload: UploaderService,
     private _alertConfirm: AlertConfirmService,
-    private _sanitizer: DomSanitizer,
     private _ps: PageHeaderService) { super(); }
 
   ngOnInit() {
@@ -34,14 +33,14 @@ export class MultiFUploadComponent extends AutoDestory implements OnInit {
     if (files instanceof Array) {
       this.present = 0;
       this.files = files;
-      this.previewUrl = files.map((f) => {
-        return this.fileUrl(f);
+      this.previewUrl = [];
+      files.forEach((f) => {
+        this.Upload.createPreViewImg(f, (url) => { this.previewUrl.push(url); });
       });
-      console.log(this.files);
       return;
     }
     this.files = undefined;
-    this.alertError(files);
+    this.Upload.alertFileError(files);
   }
 
   startUpload() {
@@ -62,28 +61,10 @@ export class MultiFUploadComponent extends AutoDestory implements OnInit {
         }
       },
       (err: any) => {
-        this._alertConfirm.alert('upload fail!');
       },
       () => {
         this._alertConfirm.alert('upload success!');
       });
-
-  }
-  alertError(msg: FileError) {
-    switch (msg) {
-      case FileError.NumError:
-        this._alertConfirm.alert('Number Error');
-        break;
-      case FileError.SizeError:
-        this._alertConfirm.alert('Size Error');
-        break;
-      case FileError.TypeError:
-        this._alertConfirm.alert('Type Error');
-        break;
-    }
   }
 
-  fileUrl(file: File) {
-    return this._sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
-  }
 }

@@ -8,38 +8,38 @@ import { UploaderService } from '@shared/services/uploader.service';
 import { FileError, UploadEvent, UploadStatus } from 'ngxf-uploader';
 
 @Component({
-  selector: 'app-signal-f-upload',
-  templateUrl: './signal-f-upload.component.html',
-  styleUrls: ['./signal-f-upload.component.scss']
+  selector: 'app-drop-f-upload',
+  templateUrl: './drop-f-upload.component.html',
+  styleUrls: ['./drop-f-upload.component.scss']
 })
-export class SignalFUploadComponent extends AutoDestory implements OnInit {
+export class DropFUploadComponent extends AutoDestory implements OnInit {
 
-  public myForm: FormGroup;
-  public file: File;
-  public filePreviewPath: SafeUrl;
-
+  public files: File[];
+  public previewUrl: SafeUrl[];
   public present = 0;
 
   constructor(
     private Upload: UploaderService,
-    private _alertConfirm: AlertConfirmService,
-    private _ps: PageHeaderService) { super(); }
-
+    private _ps: PageHeaderService,
+    private _alertConfirm: AlertConfirmService) { super(); }
 
   ngOnInit() {
-    this._ps.setTitle('Signal File Uploader');
+    this._ps.setTitle('Drop File Uploader');
   }
 
   // non-multiple, return File
-  uploadFile(file: File | FileError): void {
-    if (file instanceof File) {
+  uploadFileList(files: File[] | FileError): void {
+    if (files instanceof Array) {
       this.present = 0;
-      this.file = file;
-      this.Upload.createPreViewImg(this.file, (url) => { this.filePreviewPath = url; });
+      this.files = files;
+      this.previewUrl = [];
+      files.forEach((f) => {
+        this.Upload.createPreViewImg(f, (url) => { this.previewUrl.push(url); });
+      });
       return;
     }
-    this.file = undefined;
-    this.Upload.alertFileError(file);
+    this.files = undefined;
+    this.Upload.alertFileError(files);
   }
 
   startUpload() {
@@ -48,7 +48,7 @@ export class SignalFUploadComponent extends AutoDestory implements OnInit {
       fields: {
         toUrl: 'device'
       },
-      files: this.file,
+      files: this.files,
       filesKey: 'MMSUploadFile',
       process: true
     })
@@ -64,6 +64,6 @@ export class SignalFUploadComponent extends AutoDestory implements OnInit {
       () => {
         this._alertConfirm.alert('upload success!');
       });
-
   }
+
 }

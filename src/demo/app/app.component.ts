@@ -25,7 +25,7 @@ export class AppComponent {
       fields: {
         toUrl: 'device'
       },
-      files: file
+      files: this.fileData
     }).subscribe(
       (event: UploadEvent) => {
         if (event.status === UploadStatus.Uploading) {
@@ -54,7 +54,7 @@ export class AppComponent {
       fields: {
         toUrl: 'device'
       },
-      files: files,
+      files: [],
       // filesKey: ['MMSUploadFile', 'aaa', 'bbb'],
       filesKey: ['MMSUploadFile'],
       process: true

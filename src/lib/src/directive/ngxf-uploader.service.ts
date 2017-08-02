@@ -14,7 +14,7 @@ export class NgxfUploaderService {
   constructor(private http: HttpClient) { }
 
   upload(d: UploadObject): Observable<any> {
-    if ((d.files instanceof File) || (d.files instanceof Array && d.fields.length !== 0)) {
+    if ((d.files instanceof File) || (d.files instanceof Array && d.files.length !== 0)) {
       const ufData = new FormData();
 
       if (d.files instanceof File) {
@@ -36,7 +36,9 @@ export class NgxfUploaderService {
         }
       }
 
-      Object.keys(d.fields).forEach(key => ufData.append(key, d.fields[key]));
+      if (d.fields) {
+        Object.keys(d.fields).forEach(key => ufData.append(key, d.fields[key]));
+      }
 
       const req = new HttpRequest(d.method || 'POST', d.url, ufData, {
         reportProgress: d.process,

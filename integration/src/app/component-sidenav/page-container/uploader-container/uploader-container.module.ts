@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignalFUploadComponent } from './signal-f-upload/signal-f-upload.component';
 import { MultiFUploadComponent } from './multi-f-upload/multi-f-upload.component';
 import { NgxfUploaderModule } from 'ngxf-uploader';
+import { DropFUploadComponent } from './drop-f-upload/drop-f-upload.component';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,12 +18,14 @@ import { NgxfUploaderModule } from 'ngxf-uploader';
     ReactiveFormsModule,
     UploaderContainerRoutingModule,
     MyMaterialModuleModule,
-    NgxfUploaderModule
+    NgxfUploaderModule,
+    SharedModule,
   ],
   declarations: [
     UploaderContainerComponent,
     SignalFUploadComponent,
-    MultiFUploadComponent
-  ]
+    MultiFUploadComponent,
+    DropFUploadComponent
+]
 })
 export class UploaderContainerModule { }

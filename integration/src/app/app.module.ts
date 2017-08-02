@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgxfUploaderModule } from 'ngxf-uploader';
+import { MarkdownModule } from 'angular2-markdown';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ComponentSidenavModule } from './component-sidenav/component-sidenav.module';
@@ -44,12 +45,13 @@ import { AlertConfirmModule } from '@shared/components/alert-confirm/alert-confi
     HttpModule,
     HttpClientModule,
     NgxfUploaderModule.forRoot(),
+    MarkdownModule.forRoot(),
+    SharedModule.forRoot(),
+    AlertConfirmModule.forRoot(),
+    MyMaterialModuleModule,
 
     AppRoutingModule,
-
-    MyMaterialModuleModule,
     ComponentSidenavModule,
-    AlertConfirmModule.forRoot()
   ],
   providers: [NavbarService],
   bootstrap: [AppComponent]

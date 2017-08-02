@@ -1,4 +1,11 @@
-<button md-raised-button color="warn" (click)="multiple.click()">choice file</button>
+<div class="block"
+     (ngxf-drop)="uploadFileList($event)"
+     drop-class="drop"
+     accept="image/*"
+     multiple
+     (click)="multiple.click()">
+  <h2>Drop File to this area</h2>
+</div>
 <button md-raised-button color="accent" (click)="startUpload()">Upload</button>
 
 <md-card>
@@ -18,6 +25,5 @@
     <img *ngIf="previewUrl[i]" md-card-image [src]="previewUrl[i]">
   </md-card>
 </div>
-
 
 <input #multiple type="file" (ngxf-select)="uploadFileList($event)" accept="image/*" required multiple>
