@@ -1,7 +1,7 @@
 {
   "name": "ngxf-uploader",
-  "version": "1.2.2",
-  "description": "Angular(4.3+) uploader",
+  "version": "1.2.3",
+  "description": "Angular(4.3+) uploader with RxJx",
   "main": "./bundles/ngxf-uploader.umd.js",
   "module": "./ngxf-uploader.es5.js",
   "es2015": "./ngxf-uploader.js",

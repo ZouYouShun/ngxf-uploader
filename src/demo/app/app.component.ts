@@ -1,3 +1,4 @@
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { NgxfUploaderService, UploadEvent, UploadStatus, FileError } from 'ngxf-uploader';
@@ -22,10 +23,13 @@ export class AppComponent {
     }
     this.Upload.upload({
       url: 'http://localhost:3000/file/upload',
+      headers: new HttpHeaders().set('Authorization', 'some-token'),
+      params: new HttpParams().set('test', 's'),
       fields: {
         toUrl: 'device'
       },
-      files: this.fileData
+      filesKey: ['MMSUploadFile'],
+      files: file
     }).subscribe(
       (event: UploadEvent) => {
         if (event.status === UploadStatus.Uploading) {
@@ -51,10 +55,12 @@ export class AppComponent {
 
     this.Upload.upload({
       url: 'http://localhost:3000/file/upload',
+      headers: { Authorization: 'some-token' },
+      params: { test: 'sss', ssss: 'ddd' },
       fields: {
         toUrl: 'device'
       },
-      files: [],
+      files: files,
       // filesKey: ['MMSUploadFile', 'aaa', 'bbb'],
       filesKey: ['MMSUploadFile'],
       process: true

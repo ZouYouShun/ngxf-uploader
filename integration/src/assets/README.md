@@ -10,12 +10,9 @@ Select file or Drop file, and return an Observable. You can custom your behavior
 
 ## Install
 
-```
-npm install ngxf-uploader --save
-```
+`npm install ngxf-uploader --save`
 
 1. Import `HttpClientModule` and RxJs into your main AppModule, and `NgxfUploaderModule` into your main AppModule or in module where you want use. 
-
 ```ts
 // app.module.ts
 import { NgModule } from '@angular/core';
@@ -46,9 +43,9 @@ import { NgxfUploaderModule } from 'ngxf-uploader';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
 ```
 2. Add directive in the template where you want to use.
-
 ```html
 <div class="block"
      (ngxf-drop)="uploadFileList($event)"
@@ -98,9 +95,12 @@ export class AppComponent {
     }
     this.Upload.upload({
       url: 'your upload url',
-      fields: {
+      headers: new HttpHeaders().set('Authorization', 'some-token'), //Option
+      params: new HttpParams().set('test', '123'), //Option
+      fields: { //Option
         toUrl: 'device'
       },
+      filesKey: ['MMSUploadFile'], //Option
       files: file
     }).subscribe(
       (event: UploadEvent) => {
@@ -114,9 +114,9 @@ export class AppComponent {
       });
   }
 
-  // multiple, return FileList
-  uploadFileList(files: FileList): void {
-    if (!(files instanceof FileList)) {
+  // multiple, return  File[]
+  uploadFileList(files: File[]): void {
+    if (!(files instanceof Array)) {
       this.alertError(files);
       return;
     }
@@ -214,12 +214,14 @@ upload(d: UploadObject): Observable<any>;
 ### Upload Object
 ```ts
 export interface UploadObject {
-  url: string;  // upload url
-  fields: any; // fields that you want to add.
-  files: File | FileList; // upload file or files
-  filesKey?: string | string[]; // upload files name or nama array. It will append to file in order.
-  method?: string; // You can custom your method, default is POST
-  process?: boolean; // Is has process return, default is false
+  url: string;
+  files: File | File[];
+  headers?: { [name: string]: string | string[] } | HttpHeaders;
+  params?: { [name: string]: string | string[] } | HttpParams;
+  fields?: any;
+  filesKey?: string | string[];
+  process?: boolean;
+  method?: string; // Custom your method Default is POST
 }
 ```
 

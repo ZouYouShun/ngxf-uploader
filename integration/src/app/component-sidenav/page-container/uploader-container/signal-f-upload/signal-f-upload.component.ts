@@ -1,11 +1,13 @@
+import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { SafeUrl } from '@angular/platform-browser';
-import { AlertConfirmService } from '@shared/components/alert-confirm';
+import { AlertConfirmService, AlertConfirmModel } from '@shared/components/alert-confirm';
 import { PageHeaderService } from '../../page-header/page-header.service';
 import { AutoDestory } from '@shared/base/auto.destory';
 import { UploaderService } from '@shared/services/uploader.service';
 import { FileError, UploadEvent, UploadStatus } from 'ngxf-uploader';
+import { environment } from "@env";
 
 @Component({
   selector: 'app-signal-f-upload',
@@ -44,12 +46,14 @@ export class SignalFUploadComponent extends AutoDestory implements OnInit {
 
   startUpload() {
     this.Upload.upload({
-      url: 'http://localhost:3000/file/upload',
+      url: `${environment.serverUrl}/file/upload`,
+      headers: new HttpHeaders().set('Authorization', 'some-token'),
+      params: new HttpParams().set('test', 's'),
       fields: {
         toUrl: 'device'
       },
+      filesKey: environment.filesKey,
       files: this.file,
-      filesKey: 'MMSUploadFile',
       process: true
     })
       .takeUntil(this._destroy$)
@@ -58,11 +62,16 @@ export class SignalFUploadComponent extends AutoDestory implements OnInit {
         if (event.status === UploadStatus.Uploading) {
           this.present = event.percent;
         }
+        if (event.status === UploadStatus.Completed) {
+          this._alertConfirm.alert(
+            new AlertConfirmModel('Data from server', JSON.stringify(event.data), 'success'));
+        }
+        console.log(event);
       },
       (err: any) => {
       },
       () => {
-        this._alertConfirm.alert('upload success!');
+        // this._alertConfirm.alert('upload success!');
       });
 
   }

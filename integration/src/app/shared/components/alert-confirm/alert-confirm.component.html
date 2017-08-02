@@ -5,7 +5,7 @@
   <md-icon></md-icon>
 </h2>
 
-<md-dialog-content>{{obj.data.message}}</md-dialog-content>
+<md-dialog-content [innerHtml]="obj.data.message"></md-dialog-content>
 
 <md-dialog-actions class="flex-end">
   <div>

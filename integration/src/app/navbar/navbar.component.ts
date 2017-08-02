@@ -10,7 +10,7 @@ import { AutoDestory } from '@shared/base/auto.destory';
 })
 export class NavbarComponent extends AutoDestory implements OnInit {
   @HostBinding('class') class = 'mat-elevation-z6';
-  private showToggle = false;
+  public showToggle = false;
 
   constructor(
     private _route: Router,

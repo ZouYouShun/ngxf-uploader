@@ -1,3 +1,4 @@
+import { HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   HttpErrorResponse,
   HttpHeaderResponse,
@@ -40,9 +41,31 @@ export class NgxfUploaderService {
         Object.keys(d.fields).forEach(key => ufData.append(key, d.fields[key]));
       }
 
-      const req = new HttpRequest(d.method || 'POST', d.url, ufData, {
-        reportProgress: d.process,
-      });
+
+      let url = d.url;
+      let req;
+      let params: any;
+
+      if (d.params && !(d.params instanceof HttpParams)) {
+        url = `${url}?${this.addPamars(d.params)}`;
+      } else {
+        params = d.params;
+      }
+
+
+      if (d.headers instanceof HttpHeaders) {
+        req = new HttpRequest(d.method || 'POST', url, ufData, {
+          headers: d.headers,
+          params: params,
+          reportProgress: d.process,
+        });
+      } else {
+        req = new HttpRequest(d.method || 'POST', url, ufData, {
+          headers: new HttpHeaders(d.headers),
+          params: params,
+          reportProgress: d.process,
+        });
+      }
 
       return this.http.request(req)
         .filter((r: any) => {
@@ -84,7 +107,20 @@ export class NgxfUploaderService {
         }).map((error: any) => error);
     }
   }
+
+  private addPamars(params: { [name: string]: string | string[] }) {
+    let url = '';
+
+    Object.keys(params).forEach(key => {
+      url = `${url}${key}=${params[key]}&`;
+    });
+    return url.slice(0, -1);
+  }
 }
+
+
+
+
 export enum FileError {
   NumError,
   TypeError,
@@ -103,8 +139,10 @@ export enum UploadStatus {
 
 export interface UploadObject {
   url: string;
-  fields: any;
   files: File | File[];
+  headers?: { [name: string]: string | string[] } | HttpHeaders;
+  params?: { [name: string]: string | string[] } | HttpParams;
+  fields?: any;
   filesKey?: string | string[];
   process?: boolean;
   method?: string; // Custom your method Default is POST

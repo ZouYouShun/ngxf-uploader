@@ -1,18 +1,31 @@
-# ngxf-uploader  
-
+# ngxf-uploader
 
 File uploader for Angular 4.3+, just use Angular HttpClient, no other dependence.
+[GitHub](https://github.com/ZouYouShun/ngxf-uploader)
 
-[https://github.com/ZouYouShun/ngxf-uploader](https://github.com/ZouYouShun/ngxf-uploader)
 ## Description
 
 Select file or Drop file, and return an Observable. You can custom your behavior use [RxJs](https://github.com/Reactive-Extensions/RxJS) .
 
+Provide an sample way for upload by custom options like header, params, fields, file's form name.
+
+## Example
+[heroku Example](https://ngxf-uploader.herokuapp.com/)
+
+```ts
+cd integration
+npm install
+npm start
+```
+
 ## Install
 
-`npm install ngxf-uploader --save`
+```ts
+npm install ngxf-uploader --save
+```
 
-1. Import `HttpClientModule` and RxJs into your main AppModule, and `NgxfUploaderModule` into your main AppModule or in module where you want use. 
++ Import `HttpClientModule` and RxJs into your main AppModule, and `NgxfUploaderModule` into your main AppModule or in module where you want use. 
+
 ```ts
 // app.module.ts
 import { NgModule } from '@angular/core';
@@ -45,7 +58,8 @@ import { NgxfUploaderModule } from 'ngxf-uploader';
 export class AppModule { }
 
 ```
-2. Add directive in the template where you want to use.
++ Add directive in the template where you want to use.
+
 ```html
 <div class="block"
      (ngxf-drop)="uploadFileList($event)"
@@ -68,7 +82,7 @@ export class AppModule { }
 </div>
 ```
 
-3. Add `NgxfUploaderService` in the constructor and create file upload method in the typescript and upload file to server.
++ Add `NgxfUploaderService` in the constructor and create file upload method in the typescript and upload file to server.
 
 ```ts
 import { Component, EventEmitter } from '@angular/core';
@@ -95,10 +109,14 @@ export class AppComponent {
     }
     this.Upload.upload({
       url: 'your upload url',
-      fields: {
+      headers: new HttpHeaders().set('Authorization', 'some-token'), //Option
+      params: new HttpParams().set('test', '123'), //Option
+      fields: { //Option
         toUrl: 'device'
       },
-      files: file
+      filesKey: 'MMSUploadFile', //Option
+      files: file,
+      process: true
     }).subscribe(
       (event: UploadEvent) => {
         console.log(event);
@@ -111,15 +129,17 @@ export class AppComponent {
       });
   }
 
-  // multiple, return FileList
-  uploadFileList(files: FileList): void {
-    if (!(files instanceof FileList)) {
+  // multiple, return  File[]
+  uploadFileList(files: File[]): void {
+    if (!(files instanceof Array)) {
       this.alertError(files);
       return;
     }
 
     this.Upload.upload({
       url: 'your upload url',
+      headers: { Authorization: 'some-token' },
+      params: { test: 'aaa', test2: 'bbb' },
       fields: {
         toUrl: 'device'
       },
@@ -211,12 +231,14 @@ upload(d: UploadObject): Observable<any>;
 ### Upload Object
 ```ts
 export interface UploadObject {
-  url: string;  // upload url
-  fields: any; // fields that you want to add.
-  files: File | FileList; // upload file or files
-  filesKey?: string | string[]; // upload files name or nama array. It will append to file in order.
-  method?: string; // You can custom your method, default is POST
-  process?: boolean; // Is has process return, default is false
+  url: string;
+  files: File | File[];
+  headers?: { [name: string]: string | string[] } | HttpHeaders;
+  params?: { [name: string]: string | string[] } | HttpParams;
+  fields?: any;
+  filesKey?: string | string[];
+  process?: boolean;
+  method?: string; // Custom your method Default is POST
 }
 ```
 
