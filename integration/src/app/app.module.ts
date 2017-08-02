@@ -30,6 +30,7 @@ import { NavbarService } from './navbar/navbar.service';
 import { SharedModule } from '@shared/shared.module';
 import { MyMaterialModuleModule } from '@shared/my-material-module.module';
 import { AlertConfirmModule } from '@shared/components/alert-confirm/alert-confirm.module';
+import { BlockViewModule } from "@shared/components/block-view/block-view.module";
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AlertConfirmModule } from '@shared/components/alert-confirm/alert-confi
     HttpModule,
     HttpClientModule,
     NgxfUploaderModule.forRoot(),
+    BlockViewModule.forRoot(),
     MarkdownModule.forRoot(),
     SharedModule.forRoot(),
     AlertConfirmModule.forRoot(),

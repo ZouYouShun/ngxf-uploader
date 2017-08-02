@@ -1,8 +1,9 @@
-<div class="block" @popup *ngIf="blockViewObject.isShow">
-  <div class="window">
-    <div class="load-7">
-      <p>{{blockViewObject.title}}</p>
-      <div class="square"></div>
-    </div>
+<div class="loader-wrap" [@popup] *ngIf="blockViewObject.isShow">
+
+  <div class="loader">
+    <p class="loading-text">{{blockViewObject.title}}</p>
+    <md-progress-spinner class="example-margin" color="primary" mode="indeterminate">
+    </md-progress-spinner>
   </div>
+
 </div>

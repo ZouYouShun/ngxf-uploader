@@ -6,7 +6,8 @@ import { PageHeaderService } from '../../page-header/page-header.service';
 import { AutoDestory } from '@shared/base/auto.destory';
 import { UploaderService } from '@shared/services/uploader.service';
 import { FileError, UploadEvent, UploadStatus } from 'ngxf-uploader';
-import { environment } from "@env";
+import { environment } from '@env';
+import { BlockViewService } from '@shared/components/block-view/block-view.service';
 
 @Component({
   selector: 'app-multi-f-upload',
@@ -23,7 +24,8 @@ export class MultiFUploadComponent extends AutoDestory implements OnInit {
   constructor(
     private Upload: UploaderService,
     private _alertConfirm: AlertConfirmService,
-    private _ps: PageHeaderService) { super(); }
+    private _ps: PageHeaderService,
+    private _block: BlockViewService) { super(); }
 
   ngOnInit() {
     this._ps.setTitle('Multiple File Uploader');
@@ -45,6 +47,7 @@ export class MultiFUploadComponent extends AutoDestory implements OnInit {
   }
 
   startUpload() {
+    this._block.block('uploading...');
     this.Upload.upload({
       url: `${environment.serverUrl}/file/upload`,
       fields: {
@@ -67,8 +70,10 @@ export class MultiFUploadComponent extends AutoDestory implements OnInit {
         console.log(event);
       },
       (err: any) => {
+        this._block.unblock();
       },
       () => {
+        this._block.unblock();
         // this._alertConfirm.alert('upload success!');
       });
   }

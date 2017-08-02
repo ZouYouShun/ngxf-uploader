@@ -7,7 +7,8 @@ import { PageHeaderService } from '../../page-header/page-header.service';
 import { AutoDestory } from '@shared/base/auto.destory';
 import { UploaderService } from '@shared/services/uploader.service';
 import { FileError, UploadEvent, UploadStatus } from 'ngxf-uploader';
-import { environment } from "@env";
+import { environment } from '@env';
+import { BlockViewService } from '@shared/components/block-view/block-view.service';
 
 @Component({
   selector: 'app-signal-f-upload',
@@ -25,7 +26,8 @@ export class SignalFUploadComponent extends AutoDestory implements OnInit {
   constructor(
     private Upload: UploaderService,
     private _alertConfirm: AlertConfirmService,
-    private _ps: PageHeaderService) { super(); }
+    private _ps: PageHeaderService,
+    private _block: BlockViewService) { super(); }
 
 
   ngOnInit() {
@@ -45,6 +47,7 @@ export class SignalFUploadComponent extends AutoDestory implements OnInit {
   }
 
   startUpload() {
+    this._block.block('uploading...');
     this.Upload.upload({
       url: `${environment.serverUrl}/file/upload`,
       headers: new HttpHeaders().set('Authorization', 'some-token'),
@@ -69,8 +72,10 @@ export class SignalFUploadComponent extends AutoDestory implements OnInit {
         console.log(event);
       },
       (err: any) => {
+        this._block.unblock();
       },
       () => {
+        this._block.unblock();
         // this._alertConfirm.alert('upload success!');
       });
 

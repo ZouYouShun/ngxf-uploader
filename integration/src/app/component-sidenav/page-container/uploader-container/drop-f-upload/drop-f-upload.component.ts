@@ -7,6 +7,7 @@ import { AutoDestory } from '@shared/base/auto.destory';
 import { UploaderService } from '@shared/services/uploader.service';
 import { FileError, UploadEvent, UploadStatus } from 'ngxf-uploader';
 import { environment } from '@env';
+import { BlockViewService } from '@shared/components/block-view/block-view.service';
 
 @Component({
   selector: 'app-drop-f-upload',
@@ -22,7 +23,8 @@ export class DropFUploadComponent extends AutoDestory implements OnInit {
   constructor(
     private Upload: UploaderService,
     private _ps: PageHeaderService,
-    private _alertConfirm: AlertConfirmService) { super(); }
+    private _alertConfirm: AlertConfirmService,
+    private _block: BlockViewService) { super(); }
 
   ngOnInit() {
     this._ps.setTitle('Drop File Uploader');
@@ -44,6 +46,7 @@ export class DropFUploadComponent extends AutoDestory implements OnInit {
   }
 
   startUpload() {
+    this._block.block('uploading...');
     this.Upload.upload({
       url: `${environment.serverUrl}/file/upload`,
       fields: {
@@ -66,8 +69,10 @@ export class DropFUploadComponent extends AutoDestory implements OnInit {
         console.log(event);
       },
       (err: any) => {
+        this._block.unblock();
       },
       () => {
+        this._block.unblock();
         // this._alertConfirm.alert('upload success!');
       });
   }

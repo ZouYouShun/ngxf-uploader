@@ -10,6 +10,7 @@ import { MultiFUploadComponent } from './multi-f-upload/multi-f-upload.component
 import { NgxfUploaderModule } from 'ngxf-uploader';
 import { DropFUploadComponent } from './drop-f-upload/drop-f-upload.component';
 import { SharedModule } from '@shared/shared.module';
+import { BlockViewModule } from '@shared/components/block-view/block-view.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { SharedModule } from '@shared/shared.module';
     MyMaterialModuleModule,
     NgxfUploaderModule,
     SharedModule,
+    BlockViewModule,
   ],
   declarations: [
     UploaderContainerComponent,

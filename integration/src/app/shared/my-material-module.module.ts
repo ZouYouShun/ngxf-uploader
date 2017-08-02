@@ -4,43 +4,37 @@ import { CommonModule } from '@angular/common';
 import {
   MdButtonModule,
   MdCardModule,
-  MdProgressBarModule,
-  MdGridListModule,
   MdToolbarModule,
   MdIconModule,
   MdSidenavModule,
   MdSliderModule,
-  MdRadioModule,
-  MdInputModule,
-  MdDialogModule
+  MdDialogModule,
+  MdProgressBarModule,
+  MdProgressSpinnerModule
 } from '@angular/material';
 
 @NgModule({
   imports: [
     MdButtonModule,
     MdCardModule,
-    MdProgressBarModule,
-    MdGridListModule,
     MdToolbarModule,
     MdIconModule,
     MdSidenavModule,
     MdSliderModule,
-    MdRadioModule,
-    MdInputModule,
-    MdDialogModule
+    MdDialogModule,
+    MdProgressBarModule,
+    MdProgressSpinnerModule
   ],
   exports: [
     MdButtonModule,
     MdCardModule,
-    MdProgressBarModule,
-    MdGridListModule,
     MdToolbarModule,
     MdIconModule,
     MdSidenavModule,
     MdSliderModule,
-    MdRadioModule,
-    MdInputModule,
-    MdDialogModule
+    MdDialogModule,
+    MdProgressBarModule,
+    MdProgressSpinnerModule
   ],
 })
 export class MyMaterialModuleModule { }

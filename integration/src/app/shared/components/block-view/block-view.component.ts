@@ -3,6 +3,7 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { popup } from '@shared/animation/animation';
+import { AutoDestory } from '@shared/base/auto.destory';
 @Component({
   selector: 'app-block-view',
   templateUrl: './block-view.component.html',
@@ -11,9 +12,9 @@ import { popup } from '@shared/animation/animation';
     popup(150, 300)
   ]
 })
-export class BlockViewComponent implements OnInit {
+export class BlockViewComponent extends AutoDestory implements OnInit {
 
-  constructor(private _blockViewService: BlockViewService) { }
+  constructor(private _blockViewService: BlockViewService) { super(); }
 
   public blockViewObject: { isShow: boolean, title?: string }
   = { isShow: false, title: 'Loading' };
@@ -21,6 +22,7 @@ export class BlockViewComponent implements OnInit {
   ngOnInit() {
     // never destory so do not unsubscript
     this._blockViewService.datachanged
+      .takeUntil(this._destroy$)
       .subscribe(
       (data) => {
         this.blockViewObject = data;
