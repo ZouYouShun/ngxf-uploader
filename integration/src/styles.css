@@ -11,3 +11,13 @@
   margin-right: 1%;
   margin-top: 1%;
 }
+
+.mat-toolbar .mat-toolbar-row {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .mat-toolbar .mat-toolbar-row {
+    height: auto;
+  }
+}

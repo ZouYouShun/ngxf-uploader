@@ -10,6 +10,7 @@ import { AutoDestory } from '@shared/base/auto.destory';
 })
 export class ComponentSidenavComponent extends AutoDestory implements OnInit {
   @ViewChild('sidenav') side: MdSidenav;
+  // public mode = 'push';
 
   constructor(private _ns: NavbarService) { super(); }
 
