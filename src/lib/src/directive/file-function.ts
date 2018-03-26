@@ -18,7 +18,7 @@ export function emitOpload
 function checkAllFile(file: File | FileList, accept: string, option: FileOption): File | File[] | FileError {
   if (file instanceof FileList) {
     let result: any = null;
-    let files: File[] = [];
+    const files: File[] = [];
 
     if (!Array.from(file).every((f) => {
       if (!cfType(f, accept)) {

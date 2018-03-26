@@ -8,6 +8,9 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+
+import { filter, map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class NgxfUploaderService {
@@ -67,14 +70,14 @@ export class NgxfUploaderService {
         });
       }
 
-      return this.http.request(req)
-        .filter((r: any) => {
+      return this.http.request(req).pipe(
+        filter((r: any) => {
           if (d.process) {
             return !(r instanceof HttpHeaderResponse || r.type === HttpEventType.DownloadProgress);
           }
           return (r.type === HttpEventType.Response);
-        })
-        .map((event: any) => {
+        }),
+        map((event: any) => {
           switch (event.type) {
             case HttpEventType.Sent:
               return <UploadEvent>{
@@ -93,18 +96,18 @@ export class NgxfUploaderService {
                 data: event.body
               };
           }
-        })
-        .catch((error: HttpErrorResponse) => {
-          return Observable.throw(<UploadEvent>{
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return ErrorObservable.create(<UploadEvent>{
             status: UploadStatus.UploadError,
             data: error.error
           });
-        });
+        })
+      );
     } else {
-      return Observable
-        .throw(<UploadEvent>{
-          status: UploadStatus.FileNumError
-        }).map((error: any) => error);
+      return ErrorObservable.create(<UploadEvent>{ status: UploadStatus.FileNumError }).pipe(
+        map((error: any) => error)
+      );
     }
   }
 
@@ -118,19 +121,13 @@ export class NgxfUploaderService {
   }
 }
 
-
-
-
-export enum FileError {
+export const enum FileError {
   NumError,
   TypeError,
   SizeError
 }
-// NumError = 'Number Error',
-// TypeError = 'Type Error',
-// SizeError = 'Size Error'
 
-export enum UploadStatus {
+export const enum UploadStatus {
   Uploading,
   Completed,
   UploadError,

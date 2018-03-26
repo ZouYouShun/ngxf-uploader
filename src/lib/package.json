@@ -1,0 +1,26 @@
+{
+  "name": "ngxf-uploader",
+  "version": "1.2.6",
+  "keywords": [
+    "angular"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZouYouShun/ngxf-uploader.git"
+  },
+  "homepage": "https://github.com/ZouYouShun/ngxf-uploader",
+  "bugs": {
+    "url": "https://github.com/ZouYouShun/ngxf-uploader/issues"
+  },
+  "license": "MIT",
+  "main": "./bundles/ngxf-uploader.umd.js",
+  "es2015": "./esm2015/ngxf-uploader.js",
+  "module": "./esm5/ngxf-uploader.es5.js",
+  "typings": "./ngxf-uploader.d.ts",
+  "peerDependencies": {
+    "@angular/core": "^5.2.9",
+    "@angular/common": "^5.2.9",
+    "@angular/http": "^5.2.9",
+    "rxjs": "^5.5.7"
+  }
+}
