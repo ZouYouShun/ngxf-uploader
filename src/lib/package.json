@@ -1,8 +1,10 @@
 {
   "name": "ngxf-uploader",
-  "version": "1.2.6",
+  "version": "1.3.0",
   "keywords": [
-    "angular"
+    "angular",
+    "uploader",
+    "ngx"
   ],
   "repository": {
     "type": "git",
