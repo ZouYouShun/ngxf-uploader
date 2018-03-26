@@ -3,6 +3,8 @@
 File uploader for Angular 4.3+, just use Angular HttpClient, no other dependence.
 [GitHub](https://github.com/ZouYouShun/ngxf-uploader)
 
+![](https://res.cloudinary.com/dw7ecdxlp/image/upload/v1522058206/uploader_hq2lcq.gif)
+
 ## Description
 
 Select file or Drop file, and return an Observable. You can custom your behavior use [RxJs 5.x](https://github.com/Reactive-Extensions/RxJS) .
@@ -10,13 +12,7 @@ Select file or Drop file, and return an Observable. You can custom your behavior
 Provide an sample way for upload by custom options like header, params, fields, file's form name.
 
 ## Example
-[heroku Example](https://ngxf-uploader.herokuapp.com/)
-
-```ts
-cd integration
-npm install
-npm start
-```
+[firebase](https://ngxf-uploader.firebaseapp.com)
 
 ## Install
 
@@ -24,7 +20,9 @@ npm start
 npm install ngxf-uploader --save
 ```
 
-+ Import `HttpClientModule` and RxJs into your main AppModule, and `NgxfUploaderModule` into your main AppModule or in module where you want use. 
++ Import `HttpClientModule`, `NgxfUploaderModule` into your main AppModule or the module where you want use.
+
++ If you only need drag file and file selet, you don't need `.forRoot()` to register service
 
 ```ts
 // app.module.ts
@@ -213,12 +211,24 @@ accept="image/*,.svg" // String, can accept file like file accept
 multiple // none, if you want to choice multiple file, add this attribute
 ```
 
+
+## Attribute Detial
+
+| Attribute | necessary(default) | type | position | description |
+| --------- | --------- | ---- | -------- | ----------- |
+| `(ngxf-select)` | yes | `(Array)=>File | FileError` | input[file] | input file element, and it will be display none auto |
+| `(ngxf-drop)` | yes | `(Array)=>File[] | FileError` | any tag | container to drop and drag file |
+| `[ngxf-validate]` | no | `FileOption` | with `(ngxf-drop)` and `(ngxf-select)` | file validate with file size |
+| [drop-class] | no('drop') | String | with `(ngxf-drop)` and `(ngxf-select)` | when drop on tag, this class will appent on it |
+| [accept]  | no | String | with `(ngxf-drop)` and `(ngxf-select)` | accept file type |
+| [multiple] | no | Boolean | with `(ngxf-drop)` and `(ngxf-select)` | is accet multiple file |
+
 ## API
 
 ### Service Upload Method
-This method will return an Observalbe<any>, that you can subscribe it, and return a UploadEvent.
+This method will return an Observalbe<UploadEvent>, that you can subscribe it, and return a UploadEvent.
 ```ts
-upload(d: UploadObject): Observable<any>;
+upload(d: UploadObject): Observable<UploadEvent>;
 ```
 
 ### Upload Object

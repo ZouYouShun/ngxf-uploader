@@ -17,7 +17,7 @@ export class NgxfUploaderService {
 
   constructor(private http: HttpClient) { }
 
-  upload(d: UploadObject): Observable<any> {
+  upload(d: UploadObject): Observable<UploadEvent> {
     if ((d.files instanceof File) || (d.files instanceof Array && d.files.length !== 0)) {
       const ufData = new FormData();
 
