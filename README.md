@@ -216,8 +216,8 @@ multiple // none, if you want to choice multiple file, add this attribute
 
 | Attribute | necessary(default) | type | position | description |
 | --------- | --------- | ---- | -------- | ----------- |
-| `(ngxf-select)` | yes | `(Array)=>File | FileError` | input[file] | input file element, and it will be display none auto |
-| `(ngxf-drop)` | yes | `(Array)=>File[] | FileError` | any tag | container to drop and drag file |
+| `(ngxf-select)` | yes | `(Array)=>File or FileError` | input[file] | input file element, and it will be display none auto |
+| `(ngxf-drop)` | yes | `(Array)=>File[] or FileError` | any tag | container to drop and drag file |
 | `[ngxf-validate]` | no | `FileOption` | with `(ngxf-drop)` and `(ngxf-select)` | file validate with file size |
 | [drop-class] | no('drop') | String | with `(ngxf-drop)` and `(ngxf-select)` | when drop on tag, this class will appent on it |
 | [accept]  | no | String | with `(ngxf-drop)` and `(ngxf-select)` | accept file type |
