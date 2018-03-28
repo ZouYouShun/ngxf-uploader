@@ -1,68 +1,33 @@
 {
   "name": "ngxf-uploader",
-  "version": "1.3.1",
+  "version": "1.3.0",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "public_api.ts"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZouYouShun/ngxf-uploader.git"
+  },
+  "keywords": [
+    "angular",
+    "uploader",
+    "ngx"
+  ],
+  "homepage": "https://github.com/ZouYouShun/ngxf-uploader",
+  "bugs": {
+    "url": "https://github.com/ZouYouShun/ngxf-uploader/issues"
+  },
   "license": "MIT",
-  "scripts": {
-    "clean": "rimraf package-lock.json node_modules",
-    "cleanAndUpdate": "npm run clean && ncu -a &&  ncu -d -a && npm install",
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --prod",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "build:lib": "gulp --gulpfile gulpfile.lib.js",
-    "version": "sync-json -v --property version --source package.json src/lib/package.json"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/animations": "^5.2.9",
-    "@angular/common": "^5.2.9",
-    "@angular/compiler": "^5.2.9",
+  "main": "./bundles/ngxf-uploader.umd.js",
+  "es2015": "./esm2015/ngxf-uploader.js",
+  "module": "./esm5/ngxf-uploader.es5.js",
+  "typings": "./ngxf-uploader.d.ts",
+  "peerDependencies": {
     "@angular/core": "^5.2.9",
-    "@angular/forms": "^5.2.9",
+    "@angular/common": "^5.2.9",
     "@angular/http": "^5.2.9",
-    "@angular/platform-browser": "^5.2.9",
-    "@angular/platform-browser-dynamic": "^5.2.9",
-    "@angular/router": "^5.2.9",
-    "core-js": "^2.5.3",
-    "rxjs": "^5.5.7",
-    "zone.js": "^0.8.20"
-  },
-  "devDependencies": {
-    "@angular/cli": "1.7.3",
-    "@angular/compiler-cli": "^5.2.9",
-    "@angular/language-service": "^5.2.9",
-    "@types/jasmine": "~2.8.6",
-    "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~9.6.0",
-    "codelyzer": "^4.2.1",
-    "jasmine-core": "~3.1.0",
-    "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~2.0.0",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "^1.4.2",
-    "karma-jasmine": "~1.1.1",
-    "karma-jasmine-html-reporter": "^1.0.0",
-    "protractor": "~5.3.0",
-    "ts-node": "~5.0.1",
-    "tslint": "~5.9.1",
-    "typescript": "~2.7.2",
-    "del": "^3.0.0",
-    "fs": "0.0.1-security",
-    "gulp": "^3.9.1",
-    "gulp-clean-css": "^3.9.3",
-    "gulp-htmlmin": "^4.0.0",
-    "gulp-if": "^2.0.2",
-    "gulp-replace": "^0.6.1",
-    "gulp-sass": "^3.2.1",
-    "path": "^0.12.7",
-    "rimraf": "^2.6.2",
-    "rollup": "^0.57.1",
-    "run-sequence": "^2.2.1",
-    "sorcery": "^0.10.0",
-    "sync-json": "^1.0.2",
-    "through2": "^2.0.3",
-    "gulp-autoprefixer": "^5.0.0"
+    "rxjs": "^5.5.7"
   }
 }
