@@ -3,7 +3,6 @@ import { Directive, OnInit, EventEmitter, Output, Input, HostListener, ElementRe
 import { emitOpload } from './file-function';
 import { FileOption, FileError } from './ngxf-uploader.service';
 
-
 @Directive({
   selector: '[ngxf-select]'
 })

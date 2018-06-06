@@ -1,3 +1,9 @@
+## 1.4.0
+
+### Upgrade to Angular 6+ Rxjs 6+
+
+* Upgrade to Angular 6+ Rxjs 6+
+
 ## 1.3.0
 
 ### Upgrade

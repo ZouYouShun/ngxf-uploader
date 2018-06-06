@@ -7,12 +7,13 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { Observable, throwError } from 'rxjs';
 
 import { filter, map, catchError } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NgxfUploaderService {
 
   constructor(private http: HttpClient) { }
@@ -98,14 +99,14 @@ export class NgxfUploaderService {
           }
         }),
         catchError((error: HttpErrorResponse) => {
-          return ErrorObservable.create(<UploadEvent>{
+          return throwError(<UploadEvent>{
             status: UploadStatus.UploadError,
             data: error.error
           });
         })
       );
     } else {
-      return ErrorObservable.create(<UploadEvent>{ status: UploadStatus.FileNumError }).pipe(
+      return throwError(<UploadEvent>{ status: UploadStatus.FileNumError }).pipe(
         map((error: any) => error)
       );
     }
