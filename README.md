@@ -22,8 +22,6 @@ npm install ngxf-uploader --save
 
 + Import `HttpClientModule`, `NgxfUploaderModule` into your main AppModule or the module where you want use.
 
-+ If you only need drag file and file selet, you don't need `.forRoot()` to register service
-
 ```ts
 // app.module.ts
 import { NgModule } from '@angular/core';
@@ -41,7 +39,7 @@ import { NgxfUploaderModule } from 'ngxf-uploader';
   imports: [
     BrowserModule,
     HttpClientModule,
-    NgxfUploaderModule.forRoot(),
+    NgxfUploaderModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
