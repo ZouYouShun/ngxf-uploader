@@ -17,20 +17,27 @@ export function emitOpload
 
 function checkAllFile(file: File | FileList, accept: string, option: FileOption): File | File[] | FileError {
   if (file instanceof FileList) {
-    let result: any = null;
     const files: File[] = [];
+    let err: FileError;
 
-    if (!Array.from(file).every((f) => {
+    const allPass = Array.from(file).every((f) => {
+      err = null;
       if (!cfType(f, accept)) {
-        result = FileError.TypeError;
+        err = FileError.TypeError;
       }
-      if (result === null && !cfSize(f, option)) {
-        result = FileError.SizeError;
+      if (!cfSize(f, option)) {
+        err = FileError.SizeError;
       }
-      files.push(f);
-      return (result === null);
-    })) {
-      return result;
+
+      if (!err) {
+        files.push(f);
+      }
+      // if skipInvalid, all pass
+      return option.skipInvalid || (err === null);
+    });
+
+    if (!allPass) {
+      return err;
     }
 
     return files;
@@ -68,7 +75,13 @@ function cfSize(file: File, option: FileOption): boolean {
   if (option) {
     const size = file.size;
     const chkSize = option.size;
-    if ((chkSize.min && size < chkSize.min) || (chkSize.max && size > chkSize.max)) {
+    if (
+      chkSize &&
+      (
+        (chkSize.min && size < chkSize.min) ||
+        (chkSize.max && size > chkSize.max)
+      )
+    ) {
       return false;
     }
   }

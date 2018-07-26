@@ -16,6 +16,9 @@ import { filter, map, catchError } from 'rxjs/operators';
 })
 export class NgxfUploaderService {
 
+  fileElm: HTMLInputElement;
+  changeListen: () => void;
+
   constructor(private http: HttpClient) { }
 
   upload(d: UploadObject): Observable<UploadEvent> {
@@ -153,5 +156,8 @@ export interface UploadEvent {
 }
 
 export interface FileOption {
-  size: { min?: number, max?: number }; // unit: Byte
+  // file accept size
+  size?: { min?: number, max?: number }; // unit: Byte,
+  // deafultis false, when you want to skip the Invalid file, you can set it to true
+  skipInvalid?: boolean;
 }

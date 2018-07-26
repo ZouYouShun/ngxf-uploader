@@ -1,4 +1,4 @@
-import { Directive, OnInit, EventEmitter, Output, Input, HostListener, ElementRef } from '@angular/core';
+import { Directive, EventEmitter, Output, Input, HostListener, ElementRef, Renderer2 } from '@angular/core';
 
 import { emitOpload } from './file-function';
 import { FileOption, FileError } from './ngxf-uploader.service';
@@ -6,27 +6,24 @@ import { FileOption, FileError } from './ngxf-uploader.service';
 @Directive({
   selector: '[ngxf-drop]'
 })
-export class NgxfDropDirective implements OnInit {
+export class NgxfDropDirective {
 
   @Output('ngxf-drop') uploadOutput = new EventEmitter<File | File[] | FileError>();
-  @Input('ngxf-validate') fileOption: FileOption;
+  @Input('ngxf-validate') fileOption: FileOption = {};
   @Input('drop-class') dropClass = 'drop';
   @Input() multiple: string;
   @Input() accept: string;
 
-  private el: HTMLInputElement;
+  constructor(
+    private _elm: ElementRef,
+    private _render: Renderer2
+  ) { }
 
-  constructor(private elementRef: ElementRef) { }
-
-  ngOnInit() {
-    this.el = this.elementRef.nativeElement;
-  }
 
   @HostListener('drop', ['$event']) public drop(e: any) {
     this.stopEvent(e);
-    this.el.classList.remove(this.dropClass);
+    this._render.removeClass(this._elm.nativeElement, this.dropClass);
 
-    // if allow mutiple
     this.uploadOutput.emit(
       emitOpload(e.dataTransfer.files, this.accept, this.multiple, this.fileOption)
     );
@@ -35,16 +32,16 @@ export class NgxfDropDirective implements OnInit {
   @HostListener('dragover', ['$event'])
   @HostListener('dragenter', ['$event']) public dragenter(e: Event) {
     this.stopEvent(e);
-    this.el.classList.add(this.dropClass);
+    this._render.addClass(this._elm.nativeElement, this.dropClass);
   }
 
   @HostListener('dragleave', ['$event']) public dragleave(e: Event) {
     this.stopEvent(e);
-    this.el.classList.remove(this.dropClass);
+    this._render.removeClass(this._elm.nativeElement, this.dropClass);
   }
 
   // prevent the file open event
-  stopEvent = (e: Event) => {
+  stopEvent(e: Event) {
     e.stopPropagation();
     e.preventDefault();
   }
