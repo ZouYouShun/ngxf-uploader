@@ -1,3 +1,10 @@
+## 1.5.0
+
+### Refactory upload with Renderer
+
+* Refactory upload with Renderer2 to add class and style
+* **add skipInvalid to FileOption:** now you can use skipInvalid to ignore invalid file.
+
 ## 1.4.0
 
 ### Upgrade to Angular 6+ Rxjs 6+

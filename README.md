@@ -1,9 +1,8 @@
 # ngxf-uploader
 
-File uploader for Angular 6+, just use Angular HttpClient, no other dependence.
-[GitHub](https://github.com/ZouYouShun/ngxf-uploader)
+File uploader for Angular 6+, just use Angular HttpClient, no other dependence. [GitHub](https://github.com/ZouYouShun/ngxf-uploader)
 
-![](https://res.cloudinary.com/dw7ecdxlp/image/upload/v1522058206/uploader_hq2lcq.gif)
+![](https://res.cloudinary.com/dw7ecdxlp/image/upload/v1532609570/ngxfuploader_w7lxqv.gif)
 
 ## Description
 
@@ -12,7 +11,7 @@ Select file or Drop file, and return an Observable. You can custom your behavior
 Provide an sample way for upload by custom options like header, params, fields, file's form name.
 
 ## Example
-[firebase](https://ngxf-uploader.firebaseapp.com)
+[https://alanzouhome.firebaseapp.com/package/NgxfUploader](https://alanzouhome.firebaseapp.com/package/NgxfUploader)
 
 ## Install
 
@@ -50,108 +49,124 @@ export class AppModule { }
 + Add directive in the template where you want to use.
 
 ```html
-<div class="block"
-     (ngxf-drop)="uploadFileList($event)"
-     drop-class="drop"
-     accept="image/*,.svg"
-     multiple
-     [ngxf-validate]="{ size: { min: 50000, max:1000000 } }">
-  <label class="upload-button">
-    <input type="file"
-          (ngxf-select)="uploadFile($event)"
-          [ngxf-validate]="{ size: { min: 50000, max:1000000 } }"
-          accept="image/*,.svg,.ttt" >
-    choice file.
-  </label>
+<!-- select file -->
+<button class="btn red cursor-pointer mar-r-1"
+  (ngxf-select)="uploadFile($event)">
+    Upload Single File
+</button>
 
-   <label class="upload-button">
-    <input type="file" (ngxf-select)="uploadFileList($event)" multiple accept="image/*,.mp3">
-    choic files
-  </label>
+<!-- drop file -->
+<div class="upload-block cursor-pointer"
+  (ngxf-select)="uploadFiles($event)"
+  (ngxf-drop)="uploadFiles($event)"
+  [ngxf-validate]="{min:5000, max:2566621 ,skipInvalid: true}"
+  drop-class="drop"
+  accept="image/*"
+  multiple>
+  <div class="mask" style="z-index: 1;">
+  </div>
+  <mat-icon class="c-white mat-accent" style="z-index: 2;">cloud_upload</mat-icon>
+  <h3>Drop file into here or click here to choice file.</h3>
 </div>
 ```
 
 + Add `NgxfUploaderService` in the constructor and create file upload method in the typescript and upload file to server.
 
 ```ts
-import { Component, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { NgxfUploaderService, UploadEvent, UploadStatus, FileError } from 'ngxf-uploader';
+import { Component } from '@angular/core';
+import { FileError, NgxfUploaderService, UploadEvent, UploadStatus } from 'ngxf-uploader';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-drop-file',
+  templateUrl: './drop-file.component.html',
+  styleUrls: ['./drop-file.component.scss']
 })
-export class AppComponent {
+export class DropFileComponent {
 
-  process: number[] = [];
-  fileData: File;
+  progress = 0;
+  isUploading = false;
 
   constructor(private Upload: NgxfUploaderService) { }
 
-  // non-multiple, return File
   uploadFile(file: File | FileError): void {
+    console.log(file);
+    this.isUploading = true;
     if (!(file instanceof File)) {
       this.alertError(file);
+      this.isUploading = false;
       return;
     }
     this.Upload.upload({
-      url: 'your upload url',
-      headers: new HttpHeaders().set('Authorization', 'some-token'), //Option
-      params: new HttpParams().set('test', '123'), //Option
-      fields: { //Option
+      url: 'your api url',
+      headers: {
+        Authorization: 'token'
+      }, // Option
+      params: {
+        test: '123'
+      }, // Option
+      fields: { // Option
         toUrl: 'device'
       },
-      filesKey: 'MMSUploadFile', //Option
+      filesKey: 'fileKey', // Option
       files: file,
       process: true
     }).subscribe(
       (event: UploadEvent) => {
         console.log(event);
-      },
-      (err) => {
-        console.log(err);
-      },
-      () => {
-        console.log('complete');
-      });
-  }
-
-  // multiple, return  File[]
-  uploadFileList(files: File[]): void {
-    if (!(files instanceof Array)) {
-      this.alertError(files);
-      return;
-    }
-
-    this.Upload.upload({
-      url: 'your upload url',
-      headers: { Authorization: 'some-token' },
-      params: { test: 'aaa', test2: 'bbb' },
-      fields: {
-        toUrl: 'device'
-      },
-      files: files,      
-      filesKey: ['key1','key2','key3'],
-      process: true
-    }).subscribe(
-      (event: UploadEvent) => {
-        if (event.status === UploadStatus.Uploading) {
-          console.log(event.percent);
-        }else{
-          console.log(event);
+        this.progress = event.percent;
+        if (event.status === UploadStatus.Completed) {
+          alert(`This file upload success!`);
         }
       },
       (err) => {
         console.log(err);
       },
       () => {
+        this.isUploading = false;
         console.log('complete');
       });
   }
 
-  //Do something you want when file error occur.
+  uploadFiles(files: File[] | FileError): void {
+    console.log(files);
+    this.isUploading = true;
+    if (!(files instanceof Array)) {
+      this.alertError(files);
+      this.isUploading = false;
+      return;
+    }
+    this.Upload.upload({
+      url: 'your api url',
+      headers: {
+        Authorization: 'token'
+      }, // Option
+      params: {
+        test: '123'
+      }, // Option
+      fields: { // Option
+        toUrl: 'device'
+      },
+      filesKey: 'fileKey', // Option
+      files: files,
+      process: true // if you want process event, set process true
+    }).subscribe(
+      (event: UploadEvent) => {
+        console.log(event);
+        this.progress = event.percent;
+        if (event.status === UploadStatus.Completed) {
+          alert(`upload complete!`);
+        }
+      },
+      (err) => {
+        console.log(err);
+      },
+      () => {
+        this.isUploading = false;
+        console.log('complete');
+      });
+  }
+
+  // Do something you want when file error occur.
   alertError(msg: FileError) {
     switch (msg) {
       case FileError.NumError:
@@ -165,63 +180,22 @@ export class AppComponent {
         break;
     }
   }
+
 }
 
-```
-## Template Directive
 
-### Select
-Add this directive on the input[type='file'].
-```html
-    <input type="file"
-          (ngxf-select)="uploadFile($event)"
-          [ngxf-validate]="{ size: { min: 50000, max:1000000 } }"
-          accept="image/*,.svg"
-          multiple >
 ```
-#### attribute
-```ts
-(ngxf-select)="uploadFile($event)"  // Method, add this on where you want to select file.
-[ngxf-validate]="{ size: { min: 50000, max:1000000 } }" // FileOption, set allow size  
-accept="image/*,.svg" // String, can accept file like file accept 
-multiple // none, if you want to choice multiple file, add this attribute
-```
-
-[IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
-
-
-### Drop
-Add this directive where you want drop in.
-```html
-    <div class="block"
-     (ngxf-drop)="uploadFileList($event)"
-     drop-class="drop"
-     accept="image/*,.svg"
-     multiple
-     [ngxf-validate]="{ size: { min: 50000, max:1000000 } }">Drop Area</div>
-```
-#### attribute
-```ts
-(ngxf-drop)="uploadFileList($event)"  // Method, add this on where you want to drop file in.
-[ngxf-validate]="{ size: { min: 50000, max:1000000 } }" // FileOption, set allow size  
-drop-class="drop" //String, class name when your file drop over, this class will append on element.
-accept="image/*,.svg" // String, can accept file like file accept 
-multiple // none, if you want to choice multiple file, add this attribute
-```
-
+## API
 
 ## Attribute Detial
-
 | Attribute | necessary(default) | type | position | description |
 | --------- | --------- | ---- | -------- | ----------- |
-| `(ngxf-select)` | yes | `(Array)=>File or FileError` | input[file] | input file element, and it will be display none auto |
+| `(ngxf-select)` | yes | `(Array)=>File or FileError` | any tag | container to click select file |
 | `(ngxf-drop)` | yes | `(Array)=>File[] or FileError` | any tag | container to drop and drag file |
-| `[ngxf-validate]` | no | `FileOption` | with `(ngxf-drop)` and `(ngxf-select)` | file validate with file size |
-| [drop-class] | no('drop') | String | with `(ngxf-drop)` and `(ngxf-select)` | when drop on tag, this class will appent on it |
-| [accept]  | no | String | with `(ngxf-drop)` and `(ngxf-select)` | accept file type |
-| [multiple] | no | Boolean | with `(ngxf-drop)` and `(ngxf-select)` | is accet multiple file |
-
-## API
+| `[ngxf-validate]` | no | `FileOption` | with `(ngxf-drop)` and `(ngxf-select)` | file validate with file size, and other options|
+| `[drop-class]` | no('drop') | `string` | with `(ngxf-drop)` and `(ngxf-select)` | when drop on tag, this class will appent on it |
+| `[accept]`  | no | `string` | with `(ngxf-drop)` and `(ngxf-select)` | accept file type |
+| `[multiple]` | no | `boolean` | with `(ngxf-drop)` and `(ngxf-select)` | is accet multiple file |
 
 ### Service Upload Method
 This method will return an Observalbe<UploadEvent>, that you can subscribe it, and return a UploadEvent.
@@ -257,7 +231,10 @@ export interface UploadEvent {
 ### FileOption
 ```ts
 export interface FileOption {
-  size: { min?: number, max?: number }; // unit: Byte
+  // file accept size
+  size?: { min?: number, max?: number }; // unit: Byte,
+  // deafultis false, when you want to skip the Invalid file, you can set it to true
+  skipInvalid?: boolean;
 }
 ```
 
@@ -265,9 +242,9 @@ export interface FileOption {
 You can use this enum to conclude the file select return.
 ```ts
 export const enum FileError {
-  NumError,
-  TypeError,
-  SizeError
+  NumError, // when number of file Error.
+  TypeError, // when file accept type Error.
+  SizeError // when file size error.
 }
 ```
 
@@ -275,9 +252,9 @@ export const enum FileError {
 You can use this enum to conclude the return Event.
 ```ts
 export const enum UploadStatus {
-  Uploading,
-  Completed,
-  UploadError, // When server error.
-  FileNumError // When no choice file.
+  Uploading, // when file is uploading.
+  Completed, // when upload complete.
+  UploadError, // when server error.
+  FileNumError // when no choice file.
 }
 ```
