@@ -1,9 +1,9 @@
 {
   "name": "ngxf-uploader",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
+    "@angular/common": ">=6.0.0",
+    "@angular/core": ">=6.0.0"
   },
   "repository": {
     "type": "git",

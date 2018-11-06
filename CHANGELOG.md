@@ -1,3 +1,11 @@
+## 1.5.1
+
+### Fix problem with IE
+
+* **Append upload input elm on body:** IE need actual element on document, that can occur upload change event.
+
+* **Change peerDependencies to more than 6.0.0:** Change peerDependencies to more than 6.0.0
+
 ## 1.5.0
 
 ### Refactory upload with Renderer

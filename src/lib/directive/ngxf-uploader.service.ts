@@ -1,23 +1,20 @@
-import { HttpParams, HttpHeaders } from '@angular/common/http';
 import {
+  HttpClient,
   HttpErrorResponse,
-  HttpHeaderResponse,
   HttpEventType,
+  HttpHeaderResponse,
+  HttpHeaders,
+  HttpParams,
   HttpRequest,
-  HttpClient
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-
-import { filter, map, catchError } from 'rxjs/operators';
+import { catchError, filter, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NgxfUploaderService {
-
-  fileElm: HTMLInputElement;
-  changeListen: () => void;
 
   constructor(private http: HttpClient) { }
 
