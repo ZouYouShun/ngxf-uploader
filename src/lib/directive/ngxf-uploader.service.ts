@@ -62,12 +62,14 @@ export class NgxfUploaderService {
           headers: d.headers,
           params: params,
           reportProgress: d.process,
+          withCredentials: d.withCredentials
         });
       } else {
         req = new HttpRequest(d.method || 'POST', url, ufData, {
           headers: new HttpHeaders(d.headers),
           params: params,
           reportProgress: d.process,
+          withCredentials: d.withCredentials
         });
       }
 
