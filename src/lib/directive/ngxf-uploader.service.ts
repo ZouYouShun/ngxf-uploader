@@ -145,6 +145,7 @@ export interface UploadObject {
   fields?: any;
   filesKey?: string | string[];
   process?: boolean;
+  withCredentials?: boolean
   method?: string; // Custom your method Default is POST
 }
 
