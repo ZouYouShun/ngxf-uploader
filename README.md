@@ -1,3 +1,6 @@
+
+[![NPM version](https://badge.fury.io/js/ngxf-uploader.svg)](http://badge.fury.io/js/ngxf-uploader)
+
 # ngxf-uploader
 
 File uploader for Angular 6+, just use Angular HttpClient, no other dependence. [GitHub](https://github.com/ZouYouShun/ngxf-uploader)
