@@ -62,12 +62,14 @@ export class NgxfUploaderService {
           headers: d.headers,
           params: params,
           reportProgress: d.process,
+          withCredentials: d.withCredentials
         });
       } else {
         req = new HttpRequest(d.method || 'POST', url, ufData, {
           headers: new HttpHeaders(d.headers),
           params: params,
           reportProgress: d.process,
+          withCredentials: d.withCredentials
         });
       }
 
@@ -143,6 +145,7 @@ export interface UploadObject {
   fields?: any;
   filesKey?: string | string[];
   process?: boolean;
+  withCredentials?: boolean
   method?: string; // Custom your method Default is POST
 }
 
