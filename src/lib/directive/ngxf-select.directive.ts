@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { emitOpload } from './file-function';
-import { FileError, FileOption } from './ngxf-uploader.service';
+import { FileError, FileOption } from '../ngxf-uploader.model';
 
 @Directive({
   selector: '[ngxf-select]'
@@ -32,7 +32,7 @@ export class NgxfSelectDirective implements AfterViewInit, OnDestroy {
     private _elm: ElementRef
   ) { }
 
-  @HostListener('click', ['$event']) public click() {
+  @HostListener('click', ['$event']) click() {
     this.bindBeforeClick();
 
     this.fileElm.click();

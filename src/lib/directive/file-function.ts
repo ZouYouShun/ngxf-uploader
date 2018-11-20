@@ -1,39 +1,35 @@
-import { FileError, FileOption } from './ngxf-uploader.service';
-export function emitOpload
-  (files: FileList,
-  accept: string,
-  multiple: string,
-  option: FileOption): File | File[] | FileError {
+import { FileError, FileOption } from '../ngxf-uploader.model';
+
+export function emitOpload(files: FileList, accept: string, multiple: string, option: FileOption): File | File[] | FileError {
 
   if (multiple !== undefined) {
     return checkAllFile(files, accept, option);
-  } else {
-    if (files.length === 1) {
-      return checkAllFile(files[0], accept, option);
-    }
-    return FileError.NumError;
   }
+
+  if (files.length === 1) {
+    return checkAllFile(files[0], accept, option);
+  }
+  return FileError.NumError;
 }
 
 function checkAllFile(file: File | FileList, accept: string, option: FileOption): File | File[] | FileError {
   if (file instanceof FileList) {
     const files: File[] = [];
-    let err: FileError;
 
-    const allPass = Array.from(file).every((f) => {
-      err = null;
-      if (!cfType(f, accept)) {
-        err = FileError.TypeError;
-      }
-      if (!cfSize(f, option)) {
-        err = FileError.SizeError;
-      }
+    let err: FileError | File;
 
-      if (!err) {
+    const allPass = Array.from(file).every((f: File) => {
+
+      err = checkOneFile(f, accept, option);
+
+      const noError = err instanceof File;
+
+      if (noError) {
         files.push(f);
       }
+
       // if skipInvalid, all pass
-      return option.skipInvalid || (err === null);
+      return option.skipInvalid || noError;
     });
 
     if (!allPass) {
@@ -41,19 +37,22 @@ function checkAllFile(file: File | FileList, accept: string, option: FileOption)
     }
 
     return files;
-
-  } else {
-    if (!cfType(file, accept)) {
-      return FileError.TypeError;
-    }
-    if (!cfSize(file, option)) {
-      return FileError.SizeError;
-    }
-    return file;
   }
+
+  return checkOneFile(file, accept, option);
 }
 
-function cfType(file: File, accept: string): boolean {
+function checkOneFile(file: File, accept: string, option: FileOption) {
+  if (!checkFileType(file, accept)) {
+    return FileError.TypeError;
+  }
+  if (!checkFileSize(file, option)) {
+    return FileError.SizeError;
+  }
+  return file;
+}
+
+function checkFileType(file: File, accept: string): boolean {
   if (accept) {
     const acceptedFilesArray = accept.split(',');
 
@@ -71,7 +70,7 @@ function cfType(file: File, accept: string): boolean {
   return true;
 }
 
-function cfSize(file: File, option: FileOption): boolean {
+function checkFileSize(file: File, option: FileOption): boolean {
   if (option) {
     const size = file.size;
     const chkSize = option.size;

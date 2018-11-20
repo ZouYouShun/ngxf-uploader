@@ -1,3 +1,9 @@
+## 1.5.2
+
+* **Add upload options** add `responseType` and `withCredentials` with upload options.
+
+* **Code optimization** Optimizate functions with check file size and type, make code more readable.
+
 ## 1.5.1
 
 ### Fix problem with IE

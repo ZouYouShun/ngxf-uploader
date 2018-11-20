@@ -1,7 +1,7 @@
-import { Directive, EventEmitter, Output, Input, HostListener, ElementRef, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
 
 import { emitOpload } from './file-function';
-import { FileOption, FileError } from './ngxf-uploader.service';
+import { FileError, FileOption } from '../ngxf-uploader.model';
 
 @Directive({
   selector: '[ngxf-drop]'
@@ -20,7 +20,7 @@ export class NgxfDropDirective {
   ) { }
 
 
-  @HostListener('drop', ['$event']) public drop(e: any) {
+  @HostListener('drop', ['$event']) drop(e: any) {
     this.stopEvent(e);
     this._render.removeClass(this._elm.nativeElement, this.dropClass);
 
@@ -30,12 +30,12 @@ export class NgxfDropDirective {
   }
 
   @HostListener('dragover', ['$event'])
-  @HostListener('dragenter', ['$event']) public dragenter(e: Event) {
+  @HostListener('dragenter', ['$event']) dragenter(e: Event) {
     this.stopEvent(e);
     this._render.addClass(this._elm.nativeElement, this.dropClass);
   }
 
-  @HostListener('dragleave', ['$event']) public dragleave(e: Event) {
+  @HostListener('dragleave', ['$event']) dragleave(e: Event) {
     this.stopEvent(e);
     this._render.removeClass(this._elm.nativeElement, this.dropClass);
   }
