@@ -32,7 +32,7 @@ export class NgxfSelectDirective implements AfterViewInit, OnDestroy {
     private _elm: ElementRef
   ) { }
 
-  @HostListener('click', ['$event']) click() {
+  @HostListener('click') click() {
     this.bindBeforeClick();
 
     this.fileElm.click();
