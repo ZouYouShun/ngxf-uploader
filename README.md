@@ -211,11 +211,15 @@ upload(d: UploadObject): Observable<UploadEvent>;
 export interface UploadObject {
   url: string;
   files: File | File[];
-  headers?: { [name: string]: string | string[] } | HttpHeaders;
-  params?: { [name: string]: string | string[] } | HttpParams;
   fields?: any;
   filesKey?: string | string[];
+
   process?: boolean;
+  headers?: { [name: string]: string | string[] } | HttpHeaders;
+  params?: { [name: string]: string | string[] } | HttpParams;
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+  withCredentials?: boolean;
+
   method?: string; // Custom your method Default is POST
 }
 ```
