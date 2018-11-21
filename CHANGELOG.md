@@ -1,3 +1,7 @@
+## 1.5.3
+
+* **Bug fix** fix bug with ng-packgr issue [cb9f471](https://github.com/ZouYouShun/ngxf-uploader/commit/cb9f471327b094e342d51f96f58374ff60a0a49c).
+
 ## 1.5.2
 
 * **Add upload options** add `responseType` and `withCredentials` with upload options.
