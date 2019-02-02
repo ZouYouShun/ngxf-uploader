@@ -21,7 +21,10 @@ export class NgxfUploaderService {
   constructor(private http: HttpClient) { }
 
   upload(option: UploadObject): Observable<UploadEvent> {
-    if ((option.files instanceof File) || (option.files instanceof Array && option.files.length !== 0)) {
+    if (
+      (option.files instanceof Blob) ||
+      (option.files instanceof File) ||
+      (option.files instanceof Array && option.files.length !== 0)) {
 
       return this.http.request(new HttpRequest(option.method || 'POST', option.url, getFormData(option), {
         headers: option.headers instanceof HttpHeaders ? option.headers : new HttpHeaders(option.headers),
@@ -73,8 +76,12 @@ function getFormData(option: UploadObject) {
 
   const data = new FormData();
 
-  if (option.files instanceof File) {
-    data.append(<string>option.filesKey || 'file', option.files, option.files.name);
+  if (option.fields) {
+    Object.keys(option.fields).forEach(key => data.append(key, option.fields[key]));
+  }
+
+  if ((option.files instanceof Blob) || (option.files instanceof File)) {
+    data.append(<string>option.filesKey || 'file', option.files, option.files['name'] || 'blob');
   } else {
     for (let i = 0; i < option.files.length; i++) {
 
@@ -88,12 +95,9 @@ function getFormData(option: UploadObject) {
           key = option.filesKey;
         }
       }
-      data.append(key, option.files[i], option.files[i].name);
+      data.append(key, option.files[i], option.files[i]['name'] || `blob${i}`);
     }
   }
 
-  if (option.fields) {
-    Object.keys(option.fields).forEach(key => data.append(key, option.fields[key]));
-  }
   return data;
 }

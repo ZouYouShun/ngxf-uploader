@@ -1,3 +1,10 @@
+## 1.6.0
+
+### But Fix
+* **Support Blob with file**: Add Blob file type check
+* **Field order change**: Change field order before the file
+
+
 ## 1.5.3
 
 * **Bug fix** fix bug with ng-packgr issue [cb9f471](https://github.com/ZouYouShun/ngxf-uploader/commit/cb9f471327b094e342d51f96f58374ff60a0a49c).

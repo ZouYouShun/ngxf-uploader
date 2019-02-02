@@ -53,7 +53,7 @@ export class AppModule { }
 
 ```html
 <!-- select file -->
-<button class="btn red cursor-pointer mar-r-1"
+<button class="btn red cursor-pointer mr-2"
   (ngxf-select)="uploadFile($event)">
     Upload Single File
 </button>
@@ -210,7 +210,7 @@ upload(d: UploadObject): Observable<UploadEvent>;
 ```ts
 export interface UploadObject {
   url: string;
-  files: File | File[];
+  files: File | File[] | Blob | Blob[];
   fields?: any;
   filesKey?: string | string[];
 

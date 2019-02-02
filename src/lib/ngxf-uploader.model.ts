@@ -15,7 +15,7 @@ export const enum UploadStatus {
 
 export interface UploadObject {
   url: string;
-  files: File | File[];
+  files: File | File[] | Blob | Blob[];
   fields?: any;
   filesKey?: string | string[];
 
