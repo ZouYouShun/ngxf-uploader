@@ -58,18 +58,24 @@ export class AppModule { }
     Upload Single File
 </button>
 
-<!-- drop file -->
+<!-- drop file & parse image -->
 <div class="upload-block cursor-pointer"
-  (ngxf-select)="uploadFiles($event)"
   (ngxf-drop)="uploadFiles($event)"
-  [ngxf-validate]="{min:5000, max:2566621 ,skipInvalid: true}"
+  (ngxf-parse)="uploadFiles($event)"
+  [ngxf-validate]="{size: {min: 5000, max:2566621} ,skipInvalid: true}"
   drop-class="drop"
   accept="image/*"
   multiple>
   <div class="mask" style="z-index: 1;">
   </div>
-  <mat-icon class="c-white mat-accent" style="z-index: 2;">cloud_upload</mat-icon>
-  <h3>Drop file into here or click here to choice file.</h3>
+  <mat-icon class="c-white mat-accent" style="z-index: 2;"
+    (ngxf-select)="uploadFiles($event)"
+    [ngxf-validate]="{size: {min: 5000, max:2566621} ,skipInvalid: true}"
+    accept="image/*"
+    multiple>
+    cloud_upload
+  </mat-icon>
+  <h3>Drop file and parse image into here or click here to choice file.</h3>
 </div>
 ```
 
