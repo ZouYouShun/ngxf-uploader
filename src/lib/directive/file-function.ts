@@ -16,13 +16,13 @@ function checkAllFile(file: File | FileList, accept: string, option: FileOption)
   if (file instanceof FileList) {
     const files: File[] = [];
 
-    let err: FileError | File;
+		let err: any;
 
-    const allPass = Array.from(file).every((f: File) => {
+		const allPass = Array.from(file).every((f: File) => {
+			const error: File | FileError = checkOneFile(f, accept, option);
+			const noError = error instanceof File;
 
-      err = checkOneFile(f, accept, option);
-
-      const noError = err instanceof File;
+			err = error;
 
       if (noError) {
         files.push(f);
@@ -32,9 +32,9 @@ function checkAllFile(file: File | FileList, accept: string, option: FileOption)
       return option.skipInvalid || noError;
     });
 
-    if (!allPass) {
-      return err;
-    }
+		if (!allPass) {
+			return err;
+		}
 
     return files;
   }

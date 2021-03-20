@@ -20,12 +20,12 @@ export class NgxfSelectDirective implements AfterViewInit, OnDestroy {
 
   @Output('ngxf-select') uploadOutput = new EventEmitter<File | File[] | FileError>();
   @Input('ngxf-validate') fileOption: FileOption = {};
-  @Input() multiple: string;
-  @Input() accept: string;
+	@Input() multiple!: string;
+	@Input() accept!: string;
 
-  private fileElm: HTMLInputElement;
+	private fileElm!: HTMLInputElement;
 
-  changeListen: () => void;
+	changeListen!: () => void;
 
   constructor(
     private _render: Renderer2,
@@ -62,7 +62,7 @@ export class NgxfSelectDirective implements AfterViewInit, OnDestroy {
     this.removeListen();
     this.changeListen = this._render.listen(this.fileElm, 'change', (e) => {
       // when length is more than 0
-      if (this.fileElm.files.length) {
+      if (this.fileElm?.files?.length) {
         this.uploadOutput.emit(
           emitOpload(this.fileElm.files, this.accept, this.multiple, this.fileOption)
         );

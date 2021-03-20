@@ -11,8 +11,8 @@ export class NgxfDropDirective {
   @Output('ngxf-drop') uploadOutput = new EventEmitter<File | File[] | FileError>();
   @Input('ngxf-validate') fileOption: FileOption = {};
   @Input('drop-class') dropClass = 'drop';
-  @Input() multiple: string;
-  @Input() accept: string;
+	@Input() multiple!: string;
+	@Input() accept!: string;
 
   constructor(
     private _elm: ElementRef,

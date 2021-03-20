@@ -39,24 +39,26 @@ export class NgxfUploaderService {
           }
           return (response.type === HttpEventType.Response);
         }),
-        map((event: any) => {
+        map((event) => {
           switch (event.type) {
             case HttpEventType.Sent:
-              return <UploadEvent>{
+              return {
                 status: UploadStatus.Uploading,
                 percent: 0
-              };
+              } as UploadEvent;
             case HttpEventType.UploadProgress:
-              return <UploadEvent>{
+              return {
                 status: UploadStatus.Uploading,
-                percent: Math.round(100 * event.loaded / event.total) || 0
-              };
+                percent: Math.round((100 * event.loaded) / event.total) || 0
+              } as UploadEvent;
             case HttpEventType.Response:
-              return <UploadEvent>{
+              return {
                 status: UploadStatus.Completed,
                 percent: 100,
                 data: event.body
-              };
+              } as UploadEvent;
+            default:
+              return {} as UploadEvent;
           }
         }),
         catchError((error: HttpErrorResponse) => {
@@ -81,7 +83,7 @@ function getFormData(option: UploadObject) {
   }
 
   if ((option.files instanceof Blob) || (option.files instanceof File)) {
-    data.append(<string>option.filesKey || 'file', option.files, option.files['name'] || 'blob');
+    data.append(<string>option.filesKey || 'file', option.files, (option.files as any)['name'] || 'blob');
   } else {
     for (let i = 0; i < option.files.length; i++) {
 
@@ -95,7 +97,7 @@ function getFormData(option: UploadObject) {
           key = option.filesKey;
         }
       }
-      data.append(key, option.files[i], option.files[i]['name'] || `blob${i}`);
+      data.append(key, option.files[i], (option.files[i] as any)['name'] || `blob${i}`);
     }
   }
 
