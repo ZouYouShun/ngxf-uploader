@@ -10,27 +10,34 @@ import {
   Renderer2,
 } from '@angular/core';
 
-import { emitOpload } from './file-function';
-import { FileError, FileOption } from '../ngxf-uploader.model';
+import {
+  FileError,
+  FileOption,
+  NgxfUploadDirective,
+} from '../ngxf-uploader.model';
+import { getUploadResult } from './file-function';
 
+/**
+ * provide a directive that can let you select file upload by click
+ */
 @Directive({
-  selector: '[ngxf-select]'
+  selector: '[ngxf-select]',
 })
-export class NgxfSelectDirective implements AfterViewInit, OnDestroy {
-
-  @Output('ngxf-select') uploadOutput = new EventEmitter<File | File[] | FileError>();
+export class NgxfSelectDirective
+  implements AfterViewInit, OnDestroy, NgxfUploadDirective {
+  /** when use select some files end, that will trigger */
+  @Output('ngxf-select') uploadOutput = new EventEmitter<
+    File | File[] | FileError
+  >();
   @Input('ngxf-validate') fileOption: FileOption = {};
-  @Input() multiple: string;
-  @Input() accept: string;
+  @Input() multiple!: string;
+  @Input() accept!: string;
 
-  private fileElm: HTMLInputElement;
+  private fileElm!: HTMLInputElement;
 
-  changeListen: () => void;
+  changeListen!: () => void;
 
-  constructor(
-    private _render: Renderer2,
-    private _elm: ElementRef
-  ) { }
+  constructor(private _render: Renderer2, private _elm: ElementRef) {}
 
   @HostListener('click') click() {
     this.bindBeforeClick();
@@ -46,35 +53,36 @@ export class NgxfSelectDirective implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // remove listen
-    this.removeListen();
+    this.changeListen?.();
     this._render.removeChild(this._elm.nativeElement.parentNode, this.fileElm);
   }
 
-  // beacuse bind before click, that can change input to change accept and validate
+  // because bind before click, that can change input to change accept and validate
   private bindBeforeClick() {
     if (this.multiple !== undefined) {
       this._render.setAttribute(this.fileElm, 'multiple', '');
     } else {
       this._render.removeAttribute(this.fileElm, 'multiple');
     }
+
     this._render.setAttribute(this.fileElm, 'accept', this.accept);
-    this.removeListen();
+
+    this.changeListen?.();
+
     this.changeListen = this._render.listen(this.fileElm, 'change', (e) => {
       // when length is more than 0
-      if (this.fileElm.files.length) {
-        this.uploadOutput.emit(
-          emitOpload(this.fileElm.files, this.accept, this.multiple, this.fileOption)
+      if (this.fileElm?.files?.length) {
+        const result = getUploadResult(
+          this.fileElm.files,
+          this.accept,
+          this.multiple,
+          this.fileOption
         );
+
+        this.uploadOutput.emit(result);
       }
       this.fileElm.value = '';
-      this.removeListen();
+      this.changeListen?.();
     });
-  }
-
-  private removeListen() {
-    if (this.changeListen) {
-      this.changeListen();
-    }
   }
 }

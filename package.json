@@ -1,6 +1,6 @@
 {
   "name": "ngxf-uploader",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "peerDependencies": {
     "@angular/common": ">=6.0.0",
     "@angular/core": ">=6.0.0"
@@ -12,7 +12,9 @@
   "keywords": [
     "angular",
     "uploader",
-    "ngx"
+    "ngx",
+    "file uploader",
+    "file"
   ],
   "homepage": "https://github.com/ZouYouShun/ngxf-uploader",
   "bugs": {
