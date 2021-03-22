@@ -1,3 +1,11 @@
+## 1.7.0
+
+### Feature
+* **Parse**: Support new parse directive for parse files.
+
+### Fix
+* **All code upgrade to angular 11**: upgrade package way with angular 11.2
+
 ## 1.6.0
 
 ### But Fix

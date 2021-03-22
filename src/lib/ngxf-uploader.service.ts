@@ -14,90 +14,125 @@ import { catchError, filter, map } from 'rxjs/operators';
 import { UploadEvent, UploadObject, UploadStatus } from './ngxf-uploader.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NgxfUploaderService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
+  /**
+   * a method provide you to upload file through api easily.
+   * @param option that upload detail options
+   * @returns `UploadEvent` observable that combine with `status`, `percent`, `data`
+   */
   upload(option: UploadObject): Observable<UploadEvent> {
-    if (
-      (option.files instanceof Blob) ||
-      (option.files instanceof File) ||
-      (option.files instanceof Array && option.files.length !== 0)) {
+    const {
+      files,
+      method = 'POST',
+      url,
+      headers,
+      params,
+      process,
+      filesKey,
+      fields,
+      ...rest
+    } = option;
 
-      return this.http.request(new HttpRequest(option.method || 'POST', option.url, getFormData(option), {
-        headers: option.headers instanceof HttpHeaders ? option.headers : new HttpHeaders(option.headers),
-        params: option.params instanceof HttpParams ? option.params : new HttpParams({ fromObject: option.params }),
-        reportProgress: option.process,
-        responseType: option.responseType,
-        withCredentials: option.withCredentials
-      })).pipe(
+    if (
+      files instanceof Blob ||
+      files instanceof File ||
+      (files instanceof Array && files.length !== 0)
+    ) {
+      const uploadData = objectToFormData(option);
+
+      const request = new HttpRequest(method, url, uploadData, {
+        headers:
+          headers instanceof HttpHeaders ? headers : new HttpHeaders(headers),
+        params:
+          params instanceof HttpParams
+            ? params
+            : new HttpParams({ fromObject: params }),
+        reportProgress: process,
+        ...rest,
+      });
+
+      return this.http.request(request).pipe(
         filter((response: any) => {
-          if (option.process) {
-            return !(response instanceof HttpHeaderResponse || response.type === HttpEventType.DownloadProgress);
+          if (process) {
+            return !(
+              response instanceof HttpHeaderResponse ||
+              response.type === HttpEventType.DownloadProgress
+            );
           }
-          return (response.type === HttpEventType.Response);
+
+          return response.type === HttpEventType.Response;
         }),
-        map((event) => {
+        map<any, UploadEvent>((event) => {
+          console.log(event);
           switch (event.type) {
             case HttpEventType.Sent:
               return {
                 status: UploadStatus.Uploading,
-                percent: 0
-              } as UploadEvent;
+                percent: 0,
+              };
             case HttpEventType.UploadProgress:
               return {
                 status: UploadStatus.Uploading,
-                percent: Math.round((100 * event.loaded) / event.total) || 0
-              } as UploadEvent;
+                percent: Math.round((100 * event.loaded) / event.total) || 0,
+              };
             case HttpEventType.Response:
               return {
                 status: UploadStatus.Completed,
                 percent: 100,
-                data: event.body
-              } as UploadEvent;
+                data: event.body,
+              };
             default:
-              return {} as UploadEvent;
+              return {} as any;
           }
         }),
         catchError((error: HttpErrorResponse) => {
           return throwError(<UploadEvent>{
             status: UploadStatus.UploadError,
-            data: error.error
+            data: error.error,
           });
         })
       );
     }
 
-    return throwError(<UploadEvent>{ status: UploadStatus.FileNumError });
+    return throwError({ status: UploadStatus.FileNumError });
   }
 }
 
-function getFormData(option: UploadObject) {
+const defaultFileKey = 'file';
 
+function objectToFormData({ fields, files, filesKey }: UploadObject) {
   const data = new FormData();
 
-  if (option.fields) {
-    Object.keys(option.fields).forEach(key => data.append(key, option.fields[key]));
+  // * add fields
+  if (fields) {
+    Object.keys(fields).forEach((key) => data.append(key, fields[key]));
   }
 
-  if ((option.files instanceof Blob) || (option.files instanceof File)) {
-    data.append(<string>option.filesKey || 'file', option.files, (option.files as any)['name'] || 'blob');
+  // * add files
+  if (files instanceof Blob || files instanceof File) {
+    data.append(
+      (filesKey as string) || defaultFileKey,
+      files,
+      (files as any)['name'] || 'blob'
+    );
   } else {
-    for (let i = 0; i < option.files.length; i++) {
+    for (let i = 0; i < files.length; i++) {
+      let key = defaultFileKey;
 
-      let key = 'file';
-
-      // If it has key
-      if (option.filesKey) {
-        if (option.filesKey instanceof Array) {
-          key = option.filesKey[i % option.filesKey.length];
+      // * if it has key
+      if (filesKey) {
+        if (filesKey instanceof Array) {
+          key = filesKey[i % filesKey.length];
         } else {
-          key = option.filesKey;
+          key = filesKey;
         }
       }
-      data.append(key, option.files[i], (option.files[i] as any)['name'] || `blob${i}`);
+
+      data.append(key, files[i], (files[i] as any)['name'] || `blob${i}`);
     }
   }
 

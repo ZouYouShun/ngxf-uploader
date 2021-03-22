@@ -1,7 +1,11 @@
 import { FileError, FileOption } from '../ngxf-uploader.model';
 
-export function emitOpload(files: FileList, accept: string, multiple: string, option: FileOption): File | File[] | FileError {
-
+export function getUploadResult(
+  files: FileList,
+  accept: string,
+  multiple: string,
+  option: FileOption
+): File | File[] | FileError {
   if (multiple !== undefined) {
     return checkAllFile(files, accept, option);
   }
@@ -12,17 +16,21 @@ export function emitOpload(files: FileList, accept: string, multiple: string, op
   return FileError.NumError;
 }
 
-function checkAllFile(file: File | FileList, accept: string, option: FileOption): File | File[] | FileError {
+function checkAllFile(
+  file: File | FileList,
+  accept: string,
+  option: FileOption
+): File | File[] | FileError {
   if (file instanceof FileList) {
     const files: File[] = [];
 
-		let err: any;
+    let err: any;
 
-		const allPass = Array.from(file).every((f: File) => {
-			const error: File | FileError = checkOneFile(f, accept, option);
-			const noError = error instanceof File;
+    const allPass = Array.from(file).every((f: File) => {
+      const error: File | FileError = checkOneFile(f, accept, option);
+      const noError = error instanceof File;
 
-			err = error;
+      err = error;
 
       if (noError) {
         files.push(f);
@@ -32,9 +40,9 @@ function checkAllFile(file: File | FileList, accept: string, option: FileOption)
       return option.skipInvalid || noError;
     });
 
-		if (!allPass) {
-			return err;
-		}
+    if (!allPass) {
+      return err;
+    }
 
     return files;
   }
@@ -56,13 +64,15 @@ function checkFileType(file: File, accept: string): boolean {
   if (accept) {
     const acceptedFilesArray = accept.split(',');
 
-    return acceptedFilesArray.some(type => {
+    return acceptedFilesArray.some((type) => {
       const validType = type.trim();
       if (validType.charAt(0) === '.') {
         return file.name.toLowerCase().endsWith(validType.toLowerCase());
       } else if (/\/\*$/.test(validType)) {
         // This is something like a image/* mime type
-        return file.type.replace(/\/.*$/, '') === validType.replace(/\/.*$/, '');
+        return (
+          file.type.replace(/\/.*$/, '') === validType.replace(/\/.*$/, '')
+        );
       }
       return file.type === validType;
     });
@@ -76,10 +86,8 @@ function checkFileSize(file: File, option: FileOption): boolean {
     const chkSize = option.size;
     if (
       chkSize &&
-      (
-        (chkSize.min && size < chkSize.min) ||
-        (chkSize.max && size > chkSize.max)
-      )
+      ((chkSize.min && size < chkSize.min) ||
+        (chkSize.max && size > chkSize.max))
     ) {
       return false;
     }

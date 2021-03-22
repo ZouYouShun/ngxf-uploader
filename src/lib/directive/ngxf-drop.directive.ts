@@ -1,49 +1,71 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  Renderer2,
+} from '@angular/core';
 
-import { emitOpload } from './file-function';
-import { FileError, FileOption } from '../ngxf-uploader.model';
+import {
+  FileError,
+  FileOption,
+  NgxfUploadDirective,
+} from '../ngxf-uploader.model';
+import { getUploadResult } from './file-function';
 
+const stopEvent = (e: Event) => {
+  e.stopPropagation();
+  e.preventDefault();
+};
+
+/**
+ * provide a directive for you to set area can be drop file into
+ */
 @Directive({
-  selector: '[ngxf-drop]'
+  selector: '[ngxf-drop]',
 })
-export class NgxfDropDirective {
+export class NgxfDropDirective implements NgxfUploadDirective {
+  /** when get drop file into area that will trigger */
+  @Output('ngxf-drop') onUpload = new EventEmitter<File | File[] | FileError>();
 
-  @Output('ngxf-drop') uploadOutput = new EventEmitter<File | File[] | FileError>();
   @Input('ngxf-validate') fileOption: FileOption = {};
+  @Input() multiple!: string;
+  @Input() accept!: string;
+
+  /**
+   * add class when drop into this drop area
+   * @default 'drop'
+   */
   @Input('drop-class') dropClass = 'drop';
-	@Input() multiple!: string;
-	@Input() accept!: string;
 
-  constructor(
-    private _elm: ElementRef,
-    private _render: Renderer2
-  ) { }
-
+  constructor(private _elm: ElementRef, private _render: Renderer2) {}
 
   @HostListener('drop', ['$event']) drop(e: any) {
-    this.stopEvent(e);
+    stopEvent(e);
+
     this._render.removeClass(this._elm.nativeElement, this.dropClass);
 
-    this.uploadOutput.emit(
-      emitOpload(e.dataTransfer.files, this.accept, this.multiple, this.fileOption)
+    const result = getUploadResult(
+      e.dataTransfer.files,
+      this.accept,
+      this.multiple,
+      this.fileOption
     );
+
+    this.onUpload.emit(result);
   }
 
   @HostListener('dragover', ['$event'])
-  @HostListener('dragenter', ['$event']) dragenter(e: Event) {
-    this.stopEvent(e);
+  @HostListener('dragenter', ['$event'])
+  dragenter(e: Event) {
+    stopEvent(e);
     this._render.addClass(this._elm.nativeElement, this.dropClass);
   }
 
   @HostListener('dragleave', ['$event']) dragleave(e: Event) {
-    this.stopEvent(e);
+    stopEvent(e);
     this._render.removeClass(this._elm.nativeElement, this.dropClass);
   }
-
-  // prevent the file open event
-  stopEvent(e: Event) {
-    e.stopPropagation();
-    e.preventDefault();
-  }
-
 }
