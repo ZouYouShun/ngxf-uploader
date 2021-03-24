@@ -1,3 +1,8 @@
+## 1.7.1
+
+### Bug fix
+* **console.log**: remove console.log in mistake.
+
 ## 1.7.0
 
 ### Feature

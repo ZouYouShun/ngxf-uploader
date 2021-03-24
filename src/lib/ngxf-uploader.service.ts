@@ -67,7 +67,6 @@ export class NgxfUploaderService {
           return response.type === HttpEventType.Response;
         }),
         map<any, UploadEvent>((event) => {
-          console.log(event);
           switch (event.type) {
             case HttpEventType.Sent:
               return {
