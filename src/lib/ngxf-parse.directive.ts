@@ -10,8 +10,8 @@ import {
   FileError,
   FileOption,
   NgxfUploadDirective,
-} from '../ngxf-uploader.model';
-import { getUploadResult } from './file-function';
+} from './ngxf-uploader.model';
+import { getUploadResult } from './utils';
 
 /**
  * provide a directive for you to set area can be parse file into

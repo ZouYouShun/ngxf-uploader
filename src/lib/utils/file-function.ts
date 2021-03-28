@@ -1,7 +1,7 @@
 import { FileError, FileOption } from '../ngxf-uploader.model';
 
 export function getUploadResult(
-  files: FileList,
+  files: FileList | File[],
   accept: string,
   multiple: string,
   option: FileOption
@@ -17,11 +17,11 @@ export function getUploadResult(
 }
 
 function checkAllFile(
-  file: File | FileList,
+  file: File | FileList | File[],
   accept: string,
   option: FileOption
 ): File | File[] | FileError {
-  if (file instanceof FileList) {
+  if (file instanceof FileList || file instanceof Array) {
     const files: File[] = [];
 
     let err: any;

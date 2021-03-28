@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 
-import { NgxfDropDirective } from './directive/ngxf-drop.directive';
-import { NgxfParseDirective } from './directive/ngxf-parse.directive';
-import { NgxfSelectDirective } from './directive/ngxf-select.directive';
+import { NgxfDropDirective } from './ngxf-drop.directive';
+import { NgxfParseDirective } from './ngxf-parse.directive';
+import { NgxfSelectDirective } from './ngxf-select.directive';
 
 /**
  * ### ngxf-upload

@@ -210,6 +210,7 @@ export class DropFileComponent {
 | `[drop-class]`    | no('drop')         | `string`                       | with `(ngxf-drop)` and `(ngxf-select)` | when drop on tag, this class will append on it                   |
 | `[accept]`        | no                 | `string`                       | with `(ngxf-drop)` and `(ngxf-select)` | accept file type                                                 |
 | `[multiple]`      | no                 | `boolean`                      | with `(ngxf-drop)` and `(ngxf-select)` | is allow multiple file                                           |
+| `[folder]`        | no                 | `boolean`                      | `(ngxf-select)`                        | is allow select folder file                                           |
 
 ### Service Upload Method
 

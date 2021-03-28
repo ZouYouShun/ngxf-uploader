@@ -1,3 +1,10 @@
+## 1.8.0
+
+### Feature
+* **Folder support**: `(ngxf-select)` support select folder mode.
+* **Folder support**: `(ngxf-drop)` support drag folder into **(not work in IE)**.
+
+
 ## 1.7.1
 
 ### Bug fix

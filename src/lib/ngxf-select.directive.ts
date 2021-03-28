@@ -14,8 +14,8 @@ import {
   FileError,
   FileOption,
   NgxfUploadDirective,
-} from '../ngxf-uploader.model';
-import { getUploadResult } from './file-function';
+} from './ngxf-uploader.model';
+import { getUploadResult } from './utils';
 
 /**
  * provide a directive that can let you select file upload by click
@@ -32,6 +32,8 @@ export class NgxfSelectDirective
   @Input('ngxf-validate') fileOption: FileOption = {};
   @Input() multiple!: string;
   @Input() accept!: string;
+  /** is that is select folder mode, only work when `multiple` also be `true` */
+  @Input() folder!: boolean;
 
   private fileElm!: HTMLInputElement;
 
@@ -49,6 +51,11 @@ export class NgxfSelectDirective
     this.fileElm = this._render.createElement('input');
     this._render.setAttribute(this.fileElm, 'type', 'file');
     this._render.setStyle(this.fileElm, 'display', 'none');
+
+    if (this.folder !== undefined && this.multiple !== undefined) {
+      this._render.setAttribute(this.fileElm, 'webkitdirectory', '');
+    }
+
     this._render.appendChild(this._elm.nativeElement.parentNode, this.fileElm);
   }
 

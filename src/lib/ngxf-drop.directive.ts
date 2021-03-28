@@ -12,8 +12,8 @@ import {
   FileError,
   FileOption,
   NgxfUploadDirective,
-} from '../ngxf-uploader.model';
-import { getUploadResult } from './file-function';
+} from './ngxf-uploader.model';
+import { getFilesFromGetAsEntry, getUploadResult } from './utils';
 
 const stopEvent = (e: Event) => {
   e.stopPropagation();
@@ -42,13 +42,20 @@ export class NgxfDropDirective implements NgxfUploadDirective {
 
   constructor(private _elm: ElementRef, private _render: Renderer2) {}
 
-  @HostListener('drop', ['$event']) drop(e: any) {
+  @HostListener('drop', ['$event']) async drop(e: DragEvent) {
     stopEvent(e);
 
     this._render.removeClass(this._elm.nativeElement, this.dropClass);
 
+    let files: FileList | File[];
+    try {
+      files = await getFilesFromGetAsEntry(e);
+    } catch (error) {
+      files = e.dataTransfer.files;
+    }
+
     const result = getUploadResult(
-      e.dataTransfer.files,
+      files,
       this.accept,
       this.multiple,
       this.fileOption
