@@ -4,6 +4,25 @@
 
 File uploader for Angular 6+, just use Angular HttpClient, no other dependence. [GitHub](https://github.com/ZouYouShun/ngxf-uploader)
 
+- ✅ `file` upload
+- ✅ `multiple File` upload
+- ✅ `accept` support
+- ✅ `Progress` support
+- ✅ `upload http request` support
+- ✅ `folder` upload, thanks for [SHANG-TING](https://github.com/SHANG-TING), more detail  about file upload with folder, can view his [blog](https://scullyio-blog.gofa.cloud/blog/-recursive_file_uploader)
+
+#### Future
+- [ ] keep whole folder structure like
+```json
+[
+  {
+    "name": "folder name",
+    "files": [...files],
+    ...other folder metadata
+  }
+]
+```
+
 ![](https://res.cloudinary.com/dw7ecdxlp/image/upload/v1532609570/ngxfuploader_w7lxqv.gif)
 
 ## Description
@@ -210,6 +229,7 @@ export class DropFileComponent {
 | `[drop-class]`    | no('drop')         | `string`                       | with `(ngxf-drop)` and `(ngxf-select)` | when drop on tag, this class will append on it                   |
 | `[accept]`        | no                 | `string`                       | with `(ngxf-drop)` and `(ngxf-select)` | accept file type                                                 |
 | `[multiple]`      | no                 | `boolean`                      | with `(ngxf-drop)` and `(ngxf-select)` | is allow multiple file                                           |
+| `[folder]`        | no                 | `boolean`                      | `(ngxf-select)`                        | is allow select folder file                                           |
 
 ### Service Upload Method
 

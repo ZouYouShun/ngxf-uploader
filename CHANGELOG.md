@@ -1,3 +1,12 @@
+## 1.8.0
+
+### Feature
+* **Folder support**: `(ngxf-select)` support select folder mode.
+* **Folder support**: `(ngxf-drop)` support drag folder into **(not work in IE)**.
+
+This folder upload feature, thanks for [SHANG-TING](https://github.com/SHANG-TING), more detail about file upload with folder, can view his [blog](https://scullyio-blog.gofa.cloud/blog/recursive_file_uploader/)
+
+
 ## 1.7.1
 
 ### Bug fix
