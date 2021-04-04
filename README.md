@@ -230,6 +230,7 @@ export class DropFileComponent {
 | `[accept]`        | no                 | `string`                       | with `(ngxf-drop)` and `(ngxf-select)` | accept file type                                                 |
 | `[multiple]`      | no                 | `boolean`                      | with `(ngxf-drop)` and `(ngxf-select)` | is allow multiple file                                           |
 | `[folder]`        | no                 | `boolean`                      | `(ngxf-select)`                        | is allow select folder file                                           |
+| `[structure]`        | no                 | `boolean`                      | `(ngxf-drop)`                        | show the structure of all folders and files with the new feature of dragging folders.
 
 ### Service Upload Method
 
