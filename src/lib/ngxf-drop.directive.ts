@@ -39,6 +39,11 @@ export class NgxfDropDirective implements NgxfUploadDirective {
    * @default 'drop'
    */
   @Input('drop-class') dropClass = 'drop';
+  /**
+   * show the structure of all folders and files
+   * @default false
+   */
+  @Input() structure = false;
 
   constructor(private _elm: ElementRef, private _render: Renderer2) {}
 
@@ -49,7 +54,7 @@ export class NgxfDropDirective implements NgxfUploadDirective {
 
     let files: FileList | File[];
     try {
-      files = await getFilesFromGetAsEntry(e);
+      files = await getFilesFromGetAsEntry(e, this.structure);
     } catch (error) {
       files = e.dataTransfer.files;
     }
