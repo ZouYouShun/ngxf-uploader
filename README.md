@@ -9,7 +9,7 @@ File uploader for Angular 6+, just use Angular HttpClient, no other dependence. 
 - ✅ `accept` support
 - ✅ `Progress` support
 - ✅ `upload http request` support
-- ✅ `folder` upload, thanks for [SHANG-TING](https://github.com/SHANG-TING), more detail  about file upload with folder, can view his [blog](https://scullyio-blog.gofa.cloud/blog/-recursive_file_uploader)
+- ✅ `folder` upload, thanks for [SHANG-TING](https://github.com/SHANG-TING), more detail  about file upload with folder, can view his [blog](https://scullyio-blog.gofa.cloud/blog/recursive_file_uploader)
 
 #### Future
 - [ ] keep whole folder structure like
