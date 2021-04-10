@@ -13,6 +13,7 @@ import {
 import {
   FileError,
   FileOption,
+  NgxfDirectoryStructure,
   NgxfUploadDirective,
 } from './ngxf-uploader.model';
 import { getUploadResult } from './utils';
@@ -27,13 +28,14 @@ export class NgxfSelectDirective
   implements AfterViewInit, OnDestroy, NgxfUploadDirective {
   /** when use select some files end, that will trigger */
   @Output('ngxf-select') uploadOutput = new EventEmitter<
-    File | File[] | FileError
+    File | File[] | NgxfDirectoryStructure[] | FileError
   >();
   @Input('ngxf-validate') fileOption: FileOption = {};
   @Input() multiple!: string;
   @Input() accept!: string;
   /** is that is select folder mode, only work when `multiple` also be `true` */
   @Input() folder!: boolean;
+  @Input() structure!: NgxfUploadDirective['structure'];
 
   private fileElm!: HTMLInputElement;
 
@@ -83,7 +85,8 @@ export class NgxfSelectDirective
           this.fileElm.files,
           this.accept,
           this.multiple,
-          this.fileOption
+          this.fileOption,
+          this.structure
         );
 
         this.uploadOutput.emit(result);

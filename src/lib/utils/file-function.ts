@@ -1,19 +1,33 @@
-import { FileError, FileOption } from '../ngxf-uploader.model';
+import {
+  FileError,
+  FileOption,
+  NgxfDirectoryStructure,
+  NgxfUploadDirective,
+} from '../ngxf-uploader.model';
+import { getStructureFiles } from './getStructureFiles';
 
 export function getUploadResult(
   files: FileList | File[],
   accept: string,
   multiple: string,
-  option: FileOption
-): File | File[] | FileError {
+  option: FileOption,
+  structure: NgxfUploadDirective['structure']
+): File | File[] | NgxfDirectoryStructure[] | FileError {
+  let result: any;
+
   if (multiple !== undefined) {
-    return checkAllFile(files, accept, option);
+    result = checkAllFile(files, accept, option);
+  } else if (files.length === 1) {
+    result = checkAllFile(files[0], accept, option);
+  } else {
+    result = FileError.NumError;
   }
 
-  if (files.length === 1) {
-    return checkAllFile(files[0], accept, option);
+  if (structure === 'directory' && result instanceof Array) {
+    return getStructureFiles(result);
   }
-  return FileError.NumError;
+
+  return result;
 }
 
 function checkAllFile(
