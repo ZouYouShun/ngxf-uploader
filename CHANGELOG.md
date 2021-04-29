@@ -1,3 +1,17 @@
+## 1.9.0
+
+### Feature
+* **Directory structure support**: `(ngxf-select) (ngxf-drop)` support directory structure.
+
+```ts
+  /**
+   * the structure of output result
+   * @default 'files'
+   */
+  structure: 'directory' | 'files';
+```
+
+
 ## 1.8.0
 
 ### Feature

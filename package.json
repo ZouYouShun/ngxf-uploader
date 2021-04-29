@@ -1,6 +1,6 @@
 {
   "name": "ngxf-uploader",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "peerDependencies": {
     "@angular/common": ">=6.0.0",
     "@angular/core": ">=6.0.0"

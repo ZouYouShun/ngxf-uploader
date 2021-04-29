@@ -11,6 +11,7 @@ import {
 import {
   FileError,
   FileOption,
+  NgxfDirectoryStructure,
   NgxfUploadDirective,
 } from './ngxf-uploader.model';
 import { getFilesFromGetAsEntry, getUploadResult } from './utils';
@@ -28,11 +29,14 @@ const stopEvent = (e: Event) => {
 })
 export class NgxfDropDirective implements NgxfUploadDirective {
   /** when get drop file into area that will trigger */
-  @Output('ngxf-drop') onUpload = new EventEmitter<File | File[] | FileError>();
+  @Output('ngxf-drop') onUpload = new EventEmitter<
+    File | File[] | NgxfDirectoryStructure[] | FileError
+  >();
 
   @Input('ngxf-validate') fileOption: FileOption = {};
   @Input() multiple!: string;
   @Input() accept!: string;
+  @Input() structure!: NgxfUploadDirective['structure'];
 
   /**
    * add class when drop into this drop area
@@ -58,7 +62,8 @@ export class NgxfDropDirective implements NgxfUploadDirective {
       files,
       this.accept,
       this.multiple,
-      this.fileOption
+      this.fileOption,
+      this.structure
     );
 
     this.onUpload.emit(result);

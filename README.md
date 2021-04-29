@@ -9,10 +9,12 @@ File uploader for Angular 6+, just use Angular HttpClient, no other dependence. 
 - ✅ `accept` support
 - ✅ `Progress` support
 - ✅ `upload http request` support
-- ✅ `folder` upload, thanks for [SHANG-TING](https://github.com/SHANG-TING), more detail  about file upload with folder, can view his [blog](https://scullyio-blog.gofa.cloud/blog/-recursive_file_uploader)
+- ✅ `folder` upload, thanks for [SHANG-TING](https://github.com/SHANG-TING), more detail about file upload with folder, can view his [blog](https://scullyio-blog.gofa.cloud/blog/recursive_file_uploader)
 
 #### Future
+
 - [ ] keep whole folder structure like
+
 ```json
 [
   {
@@ -220,16 +222,17 @@ export class DropFileComponent {
 
 ## Attribute Detail
 
-| Attribute         | necessary(default) | type                           | position                               | description                                                      |
-| ----------------- | ------------------ | ------------------------------ | -------------------------------------- | ---------------------------------------------------------------- |
-| `(ngxf-select)`   | yes                | `(Array)=>File or FileError`   | any tag                                | provide a directive that can let you select file upload by click |
-| `(ngxf-drop)`     | yes                | `(Array)=>File[] or FileError` | any tag                                | provide a directive for you to set area can be drop file into    |
-| `(ngxf-parse)`    | yes                | `(Array)=>File[] or FileError` | any tag                                | provide a directive for you to set area can be parse file into   |
-| `[ngxf-validate]` | no                 | `FileOption`                   | with `(ngxf-drop)` and `(ngxf-select)` | file validate with file size, and other options                  |
-| `[drop-class]`    | no('drop')         | `string`                       | with `(ngxf-drop)` and `(ngxf-select)` | when drop on tag, this class will append on it                   |
-| `[accept]`        | no                 | `string`                       | with `(ngxf-drop)` and `(ngxf-select)` | accept file type                                                 |
-| `[multiple]`      | no                 | `boolean`                      | with `(ngxf-drop)` and `(ngxf-select)` | is allow multiple file                                           |
-| `[folder]`        | no                 | `boolean`                      | `(ngxf-select)`                        | is allow select folder file                                           |
+| Attribute         | necessary(default) | type                           | position                               | description                                                                           |
+| ----------------- | ------------------ | ------------------------------ | -------------------------------------- | ------------------------------------------------------------------------------------- |
+| `(ngxf-select)`   | yes                | `(Array)=>File or FileError`   | any tag                                | provide a directive that can let you select file upload by click                      |
+| `(ngxf-drop)`     | yes                | `(Array)=>File[] or FileError` | any tag                                | provide a directive for you to set area can be drop file into                         |
+| `(ngxf-parse)`    | yes                | `(Array)=>File[] or FileError` | any tag                                | provide a directive for you to set area can be parse file into                        |
+| `[ngxf-validate]` | no                 | `FileOption`                   | with `(ngxf-drop)` and `(ngxf-select)` | file validate with file size, and other options                                       |
+| `[drop-class]`    | no('drop')         | `string`                       | with `(ngxf-drop)` and `(ngxf-select)` | when drop on tag, this class will append on it                                        |
+| `[accept]`        | no                 | `string`                       | with `(ngxf-drop)` and `(ngxf-select)` | accept file type                                                                      |
+| `[multiple]`      | no                 | `boolean`                      | with `(ngxf-drop)` and `(ngxf-select)` | is allow multiple file                                                                |
+| `[folder]`        | no                 | `boolean`                      | `(ngxf-select)`                        | is allow select folder file                                                           |
+| `[structure]`     | no                 | `boolean`                      | `(ngxf-drop)`                          | show the structure of all folders and files with the new feature of dragging folders. |
 
 ### Service Upload Method
 

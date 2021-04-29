@@ -9,6 +9,7 @@ import {
 import {
   FileError,
   FileOption,
+  NgxfDirectoryStructure,
   NgxfUploadDirective,
 } from './ngxf-uploader.model';
 import { getUploadResult } from './utils';
@@ -22,12 +23,13 @@ import { getUploadResult } from './utils';
 export class NgxfParseDirective implements NgxfUploadDirective {
   /** when get parse file that will trigger */
   @Output('ngxf-parse') uploadOutput = new EventEmitter<
-    File | File[] | FileError
+    File | File[] | NgxfDirectoryStructure[] | FileError
   >();
 
   @Input('ngxf-validate') fileOption: FileOption = {};
   @Input() multiple!: string;
   @Input() accept!: string;
+  @Input() structure!: NgxfUploadDirective['structure'];
 
   @HostListener('paste', ['$event']) parse(event: ClipboardEvent) {
     const clipboardData = event.clipboardData;
@@ -38,7 +40,8 @@ export class NgxfParseDirective implements NgxfUploadDirective {
       clipboardData?.files as FileList,
       this.accept,
       this.multiple,
-      this.fileOption
+      this.fileOption,
+      this.structure
     );
 
     this.uploadOutput.emit(result);

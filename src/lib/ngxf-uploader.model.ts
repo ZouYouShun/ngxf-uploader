@@ -113,4 +113,20 @@ export interface NgxfUploadDirective {
   accept: string;
   /** provide you can validate with files */
   fileOption: FileOption;
+  /**
+   * the structure of output result
+   * @default 'files'
+   */
+  structure: 'directory' | 'files';
+}
+
+export interface NgxfDirectoryStructure {
+  /** folder name */
+  name: string;
+  /** folder path */
+  path: string;
+  /** that folder children list */
+  children: (File | NgxfDirectoryStructure)[];
+  /** is that is directory */
+  isDirectory: boolean;
 }
