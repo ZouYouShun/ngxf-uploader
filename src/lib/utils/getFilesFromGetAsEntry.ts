@@ -56,7 +56,7 @@ export const getFilesFromGetAsEntry = async (e: DragEvent) => {
 
   for (let i = 0; i < items.length; i++) {
     const entry = items[i].webkitGetAsEntry();
-    const result = await getFilesFromEntry(entry);
+    const result = await getFilesFromEntry(entry as any);
 
     files.push(...result);
   }
