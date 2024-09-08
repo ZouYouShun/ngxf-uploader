@@ -1,7 +1,6 @@
-// TODO: find correct type of that
 type DirectoryEntry = {
   isDirectory: boolean;
-  file: (cb: (file: any) => any, failCallback: Function) => any;
+  file: (cb: (file: any) => any, failCallback: (reason?: any) => void) => any;
   createReader: () => any;
   name: string;
 };
@@ -24,8 +23,8 @@ const readDir = async (entry: DirectoryEntry, path: string) => {
   const dirReader = entry.createReader();
   const newPath = `${path + entry.name}/`;
 
-  let files = [];
-  let newFiles;
+  let files: any[] = [];
+  let newFiles: any[];
 
   do {
     newFiles = await dirReadEntries(dirReader, newPath);
@@ -35,11 +34,11 @@ const readDir = async (entry: DirectoryEntry, path: string) => {
   return files;
 };
 
-const dirReadEntries = (dirReader, path) => {
-  return new Promise((resolve, reject) => {
-    dirReader.readEntries(async (entries) => {
-      let files = [];
-      for (let entry of entries) {
+const dirReadEntries = (dirReader: any, path: string) => {
+  return new Promise<any[]>((resolve, reject) => {
+    dirReader.readEntries(async (entries: any) => {
+      let files: any[] = [];
+      for (const entry of entries) {
         const itemFiles = await getFilesFromEntry(entry, path);
         files = files.concat(itemFiles);
       }
@@ -50,15 +49,17 @@ const dirReadEntries = (dirReader, path) => {
 
 /** get files from `webkitGetAsEntry` */
 export const getFilesFromGetAsEntry = async (e: DragEvent) => {
-  let files: File[] = [];
+  const files: File[] = [];
 
-  const { items } = e.dataTransfer;
+  const { items } = e.dataTransfer || {};
 
-  for (let i = 0; i < items.length; i++) {
-    const entry = items[i].webkitGetAsEntry();
-    const result = await getFilesFromEntry(entry as any);
+  if (items) {
+    for (let i = 0; i < items.length; i++) {
+      const entry = items[i].webkitGetAsEntry();
+      const result = await getFilesFromEntry(entry as any);
 
-    files.push(...result);
+      files.push(...result);
+    }
   }
 
   return files;

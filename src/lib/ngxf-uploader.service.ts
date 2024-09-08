@@ -7,17 +7,18 @@ import {
   HttpParams,
   HttpRequest,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, filter, map } from 'rxjs/operators';
+import { inject, Injectable } from '@angular/core';
+
+import { catchError, filter, map, Observable } from 'rxjs';
 
 import { UploadEvent, UploadObject, UploadStatus } from './ngxf-uploader.model';
+import { NgxfUploadError } from './utils/upload-error';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NgxfUploaderService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   /**
    * a method provide you to upload file through api easily.
@@ -89,15 +90,17 @@ export class NgxfUploaderService {
           }
         }),
         catchError((error: HttpErrorResponse) => {
-          return throwError(<UploadEvent>{
+          throw new NgxfUploadError('uploadError', {
             status: UploadStatus.UploadError,
             data: error.error,
           });
-        })
+        }),
       );
     }
 
-    return throwError({ status: UploadStatus.FileNumError });
+    throw new NgxfUploadError('uploadError', {
+      status: UploadStatus.UploadError,
+    });
   }
 }
 
@@ -116,7 +119,7 @@ function objectToFormData({ fields, files, filesKey }: UploadObject) {
     data.append(
       (filesKey as string) || defaultFileKey,
       files,
-      (files as any)['name'] || 'blob'
+      (files as any)['name'] || 'blob',
     );
   } else {
     for (let i = 0; i < files.length; i++) {

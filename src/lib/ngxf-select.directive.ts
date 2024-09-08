@@ -2,19 +2,20 @@ import {
   AfterViewInit,
   Directive,
   ElementRef,
-  EventEmitter,
   HostListener,
-  Input,
+  inject,
+  input,
   OnDestroy,
-  Output,
+  output,
   Renderer2,
 } from '@angular/core';
 
 import {
   FileError,
-  FileOption,
+  FileValidateOptions,
   NgxfDirectoryStructure,
   NgxfUploadDirective,
+  NgxfUploadFolder,
 } from './ngxf-uploader.model';
 import { getUploadResult } from './utils';
 
@@ -23,25 +24,27 @@ import { getUploadResult } from './utils';
  */
 @Directive({
   selector: '[ngxf-select]',
+  standalone: true,
 })
 export class NgxfSelectDirective
-  implements AfterViewInit, OnDestroy, NgxfUploadDirective {
+  implements AfterViewInit, OnDestroy, NgxfUploadDirective
+{
+  private _render = inject(Renderer2);
+  private _elm = inject(ElementRef);
   /** when use select some files end, that will trigger */
-  @Output('ngxf-select') uploadOutput = new EventEmitter<
-    File | File[] | NgxfDirectoryStructure[] | FileError
-  >();
-  @Input('ngxf-validate') fileOption: FileOption = {};
-  @Input() multiple!: string;
-  @Input() accept!: string;
+  uploadOutput = output<File | File[] | NgxfDirectoryStructure[] | FileError>({
+    alias: 'ngxf-select',
+  });
+  fileOption = input<FileValidateOptions>({}, { alias: 'ngxf-validate' });
+  multiple = input<boolean | undefined>();
+  accept = input<string | undefined>();
   /** is that is select folder mode, only work when `multiple` also be `true` */
-  @Input() folder!: boolean;
-  @Input() structure!: NgxfUploadDirective['structure'];
+  folder = input<boolean | undefined>();
+  structure = input<NgxfUploadFolder>();
 
   private fileElm!: HTMLInputElement;
 
   changeListen!: () => void;
-
-  constructor(private _render: Renderer2, private _elm: ElementRef) {}
 
   @HostListener('click') click() {
     this.bindBeforeClick();
@@ -54,7 +57,7 @@ export class NgxfSelectDirective
     this._render.setAttribute(this.fileElm, 'type', 'file');
     this._render.setStyle(this.fileElm, 'display', 'none');
 
-    if (this.folder !== undefined && this.multiple !== undefined) {
+    if (this.folder() !== undefined && this.multiple() !== undefined) {
       this._render.setAttribute(this.fileElm, 'webkitdirectory', '');
     }
 
@@ -68,25 +71,26 @@ export class NgxfSelectDirective
 
   // because bind before click, that can change input to change accept and validate
   private bindBeforeClick() {
-    if (this.multiple !== undefined) {
+    if (this.multiple() !== undefined) {
       this._render.setAttribute(this.fileElm, 'multiple', '');
     } else {
       this._render.removeAttribute(this.fileElm, 'multiple');
     }
 
-    this._render.setAttribute(this.fileElm, 'accept', this.accept);
+    this._render.setAttribute(this.fileElm, 'accept', this.accept() || '');
 
     this.changeListen?.();
 
     this.changeListen = this._render.listen(this.fileElm, 'change', (e) => {
+      const files = this.fileElm?.files;
       // when length is more than 0
-      if (this.fileElm?.files?.length) {
+      if (files?.length) {
         const result = getUploadResult(
-          this.fileElm.files,
-          this.accept,
-          this.multiple,
-          this.fileOption,
-          this.structure
+          files,
+          this.accept() || '',
+          this.multiple(),
+          this.fileOption(),
+          this.structure(),
         );
 
         this.uploadOutput.emit(result);

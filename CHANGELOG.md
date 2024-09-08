@@ -1,3 +1,36 @@
+## 18.0.0
+
+### Feature
+
+- **angular**: update angular to angular 18, from now on, the main version will follow `angular/core` version.
+- **angular** migrate to standalone component
+
+### ⚠ BREAKING CHANGES
+
+- **angular**: `NgxfUploaderModule` be removed, use standalone component `NgxfSelectDirective` directly instead.
+- **ngxf-validate**: validate from `FileOption`(`min`, `max`) structure become `FileValidateOptions`
+  ```ts
+  export interface FileValidateOptions {
+    /**
+     * check upload file size
+     * unit: `Byte`
+     */
+    size?: {
+      /** the smallest bytes */
+      min?: number;
+      /** the biggest bytes */
+      max?: number;
+    }; // unit: Byte,
+    /**
+     * when you upload some files in once, but not throw error when have some file not in the range
+     * you can set it to true, let will skip the Invalid file
+     *
+     * @default false
+     */
+    skipInvalid?: boolean;
+  }
+  ```
+
 ## 2.0.0
 
 - **Angular version**: upgrade angular version to v13 with Ivy.

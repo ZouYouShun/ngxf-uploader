@@ -1,17 +1,17 @@
 import {
   FileError,
-  FileOption,
+  FileValidateOptions,
   NgxfDirectoryStructure,
-  NgxfUploadDirective,
+  NgxfUploadFolder,
 } from '../ngxf-uploader.model';
 import { getStructureFiles } from './getStructureFiles';
 
 export function getUploadResult(
   files: FileList | File[],
   accept: string,
-  multiple: string,
-  option: FileOption,
-  structure: NgxfUploadDirective['structure']
+  multiple: boolean | undefined,
+  option: FileValidateOptions,
+  structure: NgxfUploadFolder,
 ): File | File[] | NgxfDirectoryStructure[] | FileError {
   let result: any;
 
@@ -23,7 +23,7 @@ export function getUploadResult(
     result = FileError.NumError;
   }
 
-  if (structure === 'directory' && result instanceof Array) {
+  if (structure === 'directory' && Array.isArray(result)) {
     return getStructureFiles(result);
   }
 
@@ -33,7 +33,7 @@ export function getUploadResult(
 function checkAllFile(
   file: File | FileList | File[],
   accept: string,
-  option: FileOption
+  option: FileValidateOptions,
 ): File | File[] | FileError {
   if (file instanceof FileList || file instanceof Array) {
     const files: File[] = [];
@@ -64,7 +64,7 @@ function checkAllFile(
   return checkOneFile(file, accept, option);
 }
 
-function checkOneFile(file: File, accept: string, option: FileOption) {
+function checkOneFile(file: File, accept: string, option: FileValidateOptions) {
   if (!checkFileType(file, accept)) {
     return FileError.TypeError;
   }
@@ -94,7 +94,7 @@ function checkFileType(file: File, accept: string): boolean {
   return true;
 }
 
-function checkFileSize(file: File, option: FileOption): boolean {
+function checkFileSize(file: File, option: FileValidateOptions): boolean {
   if (option) {
     const size = file.size;
     const chkSize = option.size;

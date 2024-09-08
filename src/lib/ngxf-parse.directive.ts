@@ -1,16 +1,11 @@
-import {
-  Directive,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-} from '@angular/core';
+import { Directive, HostListener, input, output } from '@angular/core';
 
 import {
   FileError,
-  FileOption,
+  FileValidateOptions,
   NgxfDirectoryStructure,
   NgxfUploadDirective,
+  NgxfUploadFolder,
 } from './ngxf-uploader.model';
 import { getUploadResult } from './utils';
 
@@ -19,17 +14,18 @@ import { getUploadResult } from './utils';
  */
 @Directive({
   selector: '[ngxf-parse]',
+  standalone: true,
 })
 export class NgxfParseDirective implements NgxfUploadDirective {
   /** when get parse file that will trigger */
-  @Output('ngxf-parse') uploadOutput = new EventEmitter<
-    File | File[] | NgxfDirectoryStructure[] | FileError
-  >();
+  uploadOutput = output<File | File[] | NgxfDirectoryStructure[] | FileError>({
+    alias: 'ngxf-parse',
+  });
 
-  @Input('ngxf-validate') fileOption: FileOption = {};
-  @Input() multiple!: string;
-  @Input() accept!: string;
-  @Input() structure!: NgxfUploadDirective['structure'];
+  fileOption = input<FileValidateOptions>({}, { alias: 'ngxf-validate' });
+  multiple = input<boolean | undefined>();
+  accept = input<string | undefined>();
+  structure = input<NgxfUploadFolder>();
 
   @HostListener('paste', ['$event']) parse(event: ClipboardEvent) {
     const clipboardData = event.clipboardData;
@@ -38,10 +34,10 @@ export class NgxfParseDirective implements NgxfUploadDirective {
 
     const result = getUploadResult(
       clipboardData?.files as FileList,
-      this.accept,
-      this.multiple,
-      this.fileOption,
-      this.structure
+      this.accept() || '',
+      this.multiple(),
+      this.fileOption(),
+      this.structure(),
     );
 
     this.uploadOutput.emit(result);

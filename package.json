@@ -1,9 +1,10 @@
 {
   "name": "ngxf-uploader",
-  "version": "2.0.0",
+  "version": "18.0.0",
   "peerDependencies": {
-    "@angular/common": ">=13.0.0",
-    "@angular/core": ">=13.0.0"
+    "@angular/common": "^18.0.0",
+    "@angular/core": "^18.0.0",
+    "rxjs": "^7.8.0"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,6 @@
   "homepage": "https://github.com/ZouYouShun/ngxf-uploader",
   "bugs": {
     "url": "https://github.com/ZouYouShun/ngxf-uploader/issues"
-  }
+  },
+  "sideEffects": false
 }

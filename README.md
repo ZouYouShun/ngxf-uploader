@@ -11,16 +11,17 @@ File uploader for Angular 6+, just use Angular HttpClient, no other dependence. 
 - ✅ `upload http request` support
 - ✅ `folder` upload, thanks for [SHANG-TING](https://github.com/SHANG-TING), more detail about file upload with folder, can view his [blog](https://scullyio-blog.gofa.cloud/blog/recursive_file_uploader)
 
-#### Future
+## Stackblitz Example
 
-- [ ] keep whole folder structure like
+[Stackblitz](https://stackblitz.com/edit/stackblitz-starters-3vs7s3?file=src%2Fmain.ts)
+
+#### Future
 
 ```json
 [
   {
     "name": "folder name",
     "files": [...files],
-    ...other folder metadata
   }
 ]
 ```
@@ -29,13 +30,11 @@ File uploader for Angular 6+, just use Angular HttpClient, no other dependence. 
 
 ## Description
 
-Select file or Drop, Paste file, and return an Observable. You can custom your behavior use [RxJs 6.x](https://github.com/Reactive-Extensions/RxJS) .
+Select file or Drop, Paste file, and return an Observable. You can custom your behavior use [RxJs 7.x](https://github.com/Reactive-Extensions/RxJS) .
 
 Provide an sample way for upload by custom options like header, params, fields, file's form name.
 
 ## Example
-
-[https://alanzouhome.firebaseapp.com/package/NgxfUploader](https://alanzouhome.firebaseapp.com/package/NgxfUploader)
 
 ## Install
 
@@ -46,53 +45,104 @@ npm install ngxf-uploader --save
 - Import `HttpClientModule`, `NgxfUploaderModule` into your main AppModule or the module where you want use.
 
 ```ts
-// app.module.ts
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { HttpClientModule } from "@angular/common/http";
+import { provideHttpClient } from '@angular/common/http';
+import { provideExperimentalZonelessChangeDetection, model, inject } from '@angular/core';
 
-import { AppComponent } from "./app.component";
+import { of, catchError, finalize, tap } from 'rxjs';
 
-import { NgxfUploaderModule } from "ngxf-uploader";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { FileError, NgxfDirectoryStructure, NgxfDropDirective, NgxfSelectDirective, NgxfUploaderService, UploadEvent, UploadStatus, NgxfParseDirective } from 'ngxf-uploader';
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, NgxfUploaderModule],
-  providers: [],
-  bootstrap: [AppComponent],
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [NgxfSelectDirective, NgxfDropDirective, NgxfParseDirective],
+  templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppModule {}
+export class App {
+  progress = 0;
+  isUploading = false;
+  upload = inject(NgxfUploaderService);
+
+  uploadFile(file: File | File[] | NgxfDirectoryStructure[] | FileError) {
+    console.log(file);
+    this.isUploading = true;
+
+    if (!(file instanceof File) || Array.isArray(file)) {
+      // this.alertError(file);
+      this.isUploading = false;
+      return;
+    }
+
+    this.upload
+      .upload({
+        url: 'your api url',
+        headers: {
+          Authorization: 'token',
+        }, // Option
+        params: {
+          test: '123',
+        }, // Option
+        fields: {
+          // Option
+          toUrl: 'device',
+        },
+        filesKey: 'fileKey', // Option
+        files: file,
+        process: true,
+      })
+      .pipe(
+        tap((event: UploadEvent) => {
+          console.log(event);
+          this.progress = event.percent || 0;
+
+          if (event.status === UploadStatus.Completed) {
+            alert(`This file upload success!`);
+          }
+        }),
+        catchError((err) => {
+          console.error(err);
+          // alert(`upload fail`);
+          return of(null);
+        }),
+        finalize(() => {
+          console.log('end');
+        }),
+      )
+      .subscribe();
+  }
+
+  // Do something you want when file error occur.
+  alertError(msg: FileError) {
+    switch (msg) {
+      case FileError.NumError:
+        alert('Number Error');
+        break;
+      case FileError.SizeError:
+        alert('Size Error');
+        break;
+      case FileError.TypeError:
+        alert('Type Error');
+        break;
+    }
+  }
+}
+
+bootstrapApplication(App, {
+  providers: [provideHttpClient(), provideExperimentalZonelessChangeDetection()],
+});
 ```
 
 - Add directive in the template where you want to use.
 
 ```html
 <!-- select file -->
-<button class="btn red cursor-pointer mr-2" (ngxf-select)="uploadFile($event)">
-  Upload Single File
-</button>
+<button (ngxf-select)="uploadFile($event)">Upload Single File</button>
 
 <!-- drop file & parse image -->
-<div
-  class="upload-block cursor-pointer"
-  (ngxf-drop)="uploadFiles($event)"
-  (ngxf-parse)="uploadFiles($event)"
-  [ngxf-validate]="{size: {min: 5000, max:2566621} ,skipInvalid: true}"
-  drop-class="drop"
-  accept="image/*"
-  multiple
->
-  <div class="mask" style="z-index: 1;"></div>
-  <mat-icon
-    class="c-white mat-accent"
-    style="z-index: 2;"
-    (ngxf-select)="uploadFiles($event)"
-    [ngxf-validate]="{size: {min: 5000, max:2566621} ,skipInvalid: true}"
-    accept="image/*"
-    multiple
-  >
-    cloud_upload
-  </mat-icon>
+<div (ngxf-drop)="uploadFiles($event)" (ngxf-parse)="uploadFiles($event)" [ngxf-validate]="{size: {min: 5000, max:2566621}, skipInvalid: true}" drop-class="drop" accept="image/*" multiple>
   <h3>Drop file and parse image into here or click here to choice file.</h3>
 </div>
 ```
@@ -100,18 +150,13 @@ export class AppModule {}
 - Add `NgxfUploaderService` in the constructor and create file upload method in the typescript and upload file to server.
 
 ```ts
-import { Component } from "@angular/core";
-import {
-  FileError,
-  NgxfUploaderService,
-  UploadEvent,
-  UploadStatus,
-} from "ngxf-uploader";
+import { Component } from '@angular/core';
+import { FileError, NgxfUploaderService, UploadEvent, UploadStatus } from 'ngxf-uploader';
 
 @Component({
-  selector: "app-drop-file",
-  templateUrl: "./drop-file.component.html",
-  styleUrls: ["./drop-file.component.scss"],
+  selector: 'app-drop-file',
+  templateUrl: './drop-file.component.html',
+  styleUrls: ['./drop-file.component.scss'],
 })
 export class DropFileComponent {
   progress = 0;
@@ -128,18 +173,18 @@ export class DropFileComponent {
       return;
     }
     this.Upload.upload({
-      url: "your api url",
+      url: 'your api url',
       headers: {
-        Authorization: "token",
+        Authorization: 'token',
       }, // Option
       params: {
-        test: "123",
+        test: '123',
       }, // Option
       fields: {
         // Option
-        toUrl: "device",
+        toUrl: 'device',
       },
-      filesKey: "fileKey", // Option
+      filesKey: 'fileKey', // Option
       files: file,
       process: true,
     }).subscribe(
@@ -155,8 +200,8 @@ export class DropFileComponent {
       },
       () => {
         this.isUploading = false;
-        console.log("complete");
-      }
+        console.log('complete');
+      },
     );
   }
 
@@ -169,18 +214,18 @@ export class DropFileComponent {
       return;
     }
     this.Upload.upload({
-      url: "your api url",
+      url: 'your api url',
       headers: {
-        Authorization: "token",
+        Authorization: 'token',
       }, // Option
       params: {
-        test: "123",
+        test: '123',
       }, // Option
       fields: {
         // Option
-        toUrl: "device",
+        toUrl: 'device',
       },
-      filesKey: "fileKey", // Option
+      filesKey: 'fileKey', // Option
       files: files,
       process: true, // if you want process event, set process true
     }).subscribe(
@@ -196,8 +241,8 @@ export class DropFileComponent {
       },
       () => {
         this.isUploading = false;
-        console.log("complete");
-      }
+        console.log('complete');
+      },
     );
   }
 
@@ -205,13 +250,13 @@ export class DropFileComponent {
   alertError(msg: FileError) {
     switch (msg) {
       case FileError.NumError:
-        alert("Number Error");
+        alert('Number Error');
         break;
       case FileError.SizeError:
-        alert("Size Error");
+        alert('Size Error');
         break;
       case FileError.TypeError:
-        alert("Type Error");
+        alert('Type Error');
         break;
     }
   }
@@ -270,7 +315,7 @@ export interface UploadObject {
   /** other params that you want to attach together */
   params?: { [name: string]: string | string[] } | HttpParams;
   /** response type */
-  responseType?: "arraybuffer" | "blob" | "json" | "text";
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
   /**
    * is that with credentials
    *

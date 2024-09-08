@@ -1,5 +1,7 @@
 {
-  "extends": "../../.eslintrc.json",
+  "extends": [
+    "../../../.eslintrc.json"
+  ],
   "ignorePatterns": [
     "!**/*"
   ],
@@ -8,27 +10,24 @@
       "files": [
         "*.ts"
       ],
-      "parserOptions": {
-        "project": [
-          "projects/ngxf-uploader/tsconfig.lib.json",
-          "projects/ngxf-uploader/tsconfig.spec.json"
-        ],
-        "createDefaultProgram": true
-      },
+      "extends": [
+        "plugin:@nx/angular",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
       "rules": {
         "@angular-eslint/directive-selector": [
-          "error",
+          "off",
           {
             "type": "attribute",
-            "prefix": "ngxf",
-            "style": "kebab-case"
+            "prefix": "lib",
+            "style": "camelCase"
           }
         ],
         "@angular-eslint/component-selector": [
-          "error",
+          "off",
           {
             "type": "element",
-            "prefix": "ngxf",
+            "prefix": "lib",
             "style": "kebab-case"
           }
         ]
@@ -38,7 +37,19 @@
       "files": [
         "*.html"
       ],
+      "extends": [
+        "plugin:@nx/angular-template"
+      ],
       "rules": {}
+    },
+    {
+      "files": [
+        "*.json"
+      ],
+      "parser": "jsonc-eslint-parser",
+      "rules": {
+        "@nx/dependency-checks": "error"
+      }
     }
   ]
 }

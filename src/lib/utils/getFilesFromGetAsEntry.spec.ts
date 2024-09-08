@@ -1,6 +1,6 @@
 import { getFilesFromGetAsEntry } from './getFilesFromGetAsEntry';
 
-const FAKE_DRAG_EVENT = ({
+const FAKE_DRAG_EVENT = {
   dataTransfer: {
     items: [
       {
@@ -37,7 +37,7 @@ const FAKE_DRAG_EVENT = ({
       },
     ],
   },
-} as unknown) as DragEvent;
+} as unknown as DragEvent;
 
 describe('getFilesFromGetAsEntry', () => {
   it('should be return flat files when structure parameter is false', async () => {

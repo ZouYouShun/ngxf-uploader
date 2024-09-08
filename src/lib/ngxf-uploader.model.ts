@@ -1,4 +1,5 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { InputSignal } from '@angular/core';
 
 export const enum FileError {
   /** when number of file Error */
@@ -74,12 +75,12 @@ export interface UploadEvent {
    */
   status: UploadStatus;
   /** what percent of current upload rate */
-  percent: number;
+  percent?: number;
   /** other data you want to attach */
   data?: any;
 }
 
-export interface FileOption {
+export interface FileValidateOptions {
   /**
    * check upload file size
    * unit: `Byte`
@@ -99,9 +100,11 @@ export interface FileOption {
   skipInvalid?: boolean;
 }
 
+export type NgxfUploadFolder = 'directory' | 'files' | undefined;
+
 export interface NgxfUploadDirective {
   /** is that accept multiple files */
-  multiple: string;
+  multiple: InputSignal<boolean | undefined>;
   /**
    * accept file type
    *
@@ -110,14 +113,14 @@ export interface NgxfUploadDirective {
    * accept="image/*"
    * ```
    */
-  accept: string;
+  accept: InputSignal<string | undefined>;
   /** provide you can validate with files */
-  fileOption: FileOption;
+  fileOption: InputSignal<FileValidateOptions>;
   /**
    * the structure of output result
    * @default 'files'
    */
-  structure: 'directory' | 'files';
+  structure: InputSignal<NgxfUploadFolder>;
 }
 
 export interface NgxfDirectoryStructure {

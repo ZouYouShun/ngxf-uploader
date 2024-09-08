@@ -1,4 +1,4 @@
-import { NgxfDirectoryStructure } from '../ngxf-uploader.model';
+import type { NgxfDirectoryStructure } from '../ngxf-uploader.model';
 
 type AdditionFileAttr = {
   // * with select
@@ -13,46 +13,43 @@ type AdditionFileAttr = {
  * @returns structure file
  */
 export function getStructureFiles(files: File[]) {
-  return files.reduce<NgxfDirectoryStructure[]>(
-    (acc, curr: File & AdditionFileAttr) => {
-      const { webkitRelativePath, filepath } = curr;
-      const currentFullPath = filepath || webkitRelativePath;
+  return files.reduce<NgxfDirectoryStructure[]>((acc, curr) => {
+    const { webkitRelativePath, filepath } = curr as File & AdditionFileAttr;
+    const currentFullPath = filepath || webkitRelativePath;
 
-      if (currentFullPath) {
-        const paths = currentFullPath.split('/');
-        // remove file name
-        paths.pop();
-        const tmp = [...paths];
+    if (currentFullPath) {
+      const paths = currentFullPath.split('/');
+      // remove file name
+      paths.pop();
+      const tmp = [...paths];
 
-        let index = 0;
-        let currParent = acc;
+      let index = 0;
+      let currParent = acc;
 
-        while (tmp.length > 0) {
-          const name = tmp.shift();
-          index++;
+      while (tmp.length > 0) {
+        const name = tmp.shift();
+        index++;
 
-          let currP: any = currParent.find((x) => x.name === name);
+        let currP: any = currParent.find((x) => x.name === name);
 
-          if (!currP) {
-            currP = {
-              name: name,
-              path: paths.slice(0, index).join('/'),
-              children: [],
-              isDirectory: true,
-            };
+        if (!currP) {
+          currP = {
+            name: name,
+            path: paths.slice(0, index).join('/'),
+            children: [],
+            isDirectory: true,
+          };
 
-            currParent.push(currP);
-          }
+          currParent.push(currP);
+        }
 
-          currParent = currP.children;
+        currParent = currP.children;
 
-          if (tmp.length === 0) {
-            currParent.push(curr as any);
-          }
+        if (tmp.length === 0) {
+          currParent.push(curr as any);
         }
       }
-      return acc;
-    },
-    []
-  );
+    }
+    return acc;
+  }, []);
 }
